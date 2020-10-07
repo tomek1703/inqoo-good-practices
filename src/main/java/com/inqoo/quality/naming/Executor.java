@@ -1,4 +1,4 @@
-package com.inqoo.quality.naming.meaningful;
+package com.inqoo.quality.naming;
 
 public class Executor {
     public int perform(int[] data) {
