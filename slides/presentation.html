@@ -64,18 +64,33 @@ layout: false
 
 ## Kontrakt
 
+
+---
+## Gdzie jesteśmy
+
+Były podstawy na preworku
+
+Znamy składnie dwóch języków (znamy?)
+
+Czy to już jest umiejętność programowania?
+
 ---
 
-## Agenda
+## Program
 
 Jakość
+
 Czysty kod
+
 > - Nazewnictwo
 > - Budowa funkcji (metod)
 > - Komentarze
-> - Heurystyki obiektowe
-> - Testowanie
+> - Klasy
+
+TDD
+
 Zespołowość
+
 Object callisthenics
 
 ---
@@ -89,9 +104,9 @@ class: center middle
 
 ## Jakość
 
-- Co to dla Was jest?
+Co to dla Was jest?
 
-- Po czym poznajecie, że Wasz program jest dobrej jakości?
+Po czym poznajecie, że Wasz program jest dobrej jakości?
 
 ---
 
@@ -149,7 +164,7 @@ class: center middle
 
 Łatwe wprowadzanie nowych funkcji
 
-Łatwe poprawianie błędów (i ich wykrywanie!)
+Łatwe poprawianie błędów
 
 Łatwość dostarczania ww. zmian klientowi
 
@@ -171,7 +186,7 @@ class: center middle
 
 ---
 
-## Sposoby zapewnienia
+## Sposoby zapewnienia (niektóre)
 
 Testy automatyczne
 
@@ -207,40 +222,282 @@ Kod łatwy do zrozumienia i do zmiany
 
 Łatwy do zrozumienia
 
-> - Samodokumentujący
+Samodokumentujący
 
-> - "Czyta się jak książkę"
+"Czyta się jak książkę"
 
----
-
-layout: false
-class: center middle
-
-## Brudny kod - przykład
+Bardzo kontekstowy
 
 ---
-
-layout: false
-class: center middle
-
-## Czysty kod - przykład
+```
+public class Calc {
+    public BigDecimal get(BigDecimal base) {
+        BigDecimal res;
+        if (base.doubleValue() <= 8000) {
+            res =  BigDecimal.ZERO;
+        } else if (base.doubleValue() >= 8001 && base.doubleValue() <= 13000) {
+            res =  BigDecimal.valueOf(base.doubleValue() * 0.17 -
+                    (1360 - 834.88 * (base.doubleValue() - 8000) / 5000)).setScale(0, RoundingMode.HALF_UP);
+        } else if (base.doubleValue() >= 13001 && base.doubleValue() <= 85528) {
+            res =  BigDecimal.valueOf(base.doubleValue() * 0.17 - 525.12).setScale(0, RoundingMode.HALF_UP);
+        } else if (base.doubleValue() >= 85529 && base.doubleValue() <= 127000) {
+            res =  BigDecimal.valueOf(85528 * 0.17 + (base.doubleValue() - 85528) * 0.32 - (525.12 - (525.12 * (base.doubleValue() - 85528)) / 41472)).setScale(0, RoundingMode.HALF_UP);
+        } else if (base.doubleValue() >= 12701 && base.doubleValue() < 1000000) {
+            res =  BigDecimal.valueOf(85528 * 0.17 + (base.doubleValue() - 85528) * 0.32).setScale(0, RoundingMode.HALF_UP);
+        } else {
+            res =  BigDecimal.valueOf(85528 * 0.17 + (base.doubleValue() - 85528) * 0.32 + (base.doubleValue() - 1000000) * 0.04).setScale(0, RoundingMode.HALF_UP);
+        }
+        return res;
+    }
+}
+```
 
 ---
 
 ## Czysty kod
 
-> - Zrozumiałe nazwy
+> - Zrozumiałe nazwy klas, metod i zmiennych
 > - Budowa funkcji (metod)
+> - Klasy
 > - Komentarze
-> - Heurystyki obiektowe
-> - Testowanie
+> - Obsługa błędów
 
 ---
 
-## Nazwy klas, metod i zmiennych
+## Nazwy
+
+Opisowe
+
+Nadające sens
+
+Mające znaczenie
 
 ---
 
+## Nazwy
+
+Klasy - rzeczowniki
+> np. Osoba - Pracownik, Klient, Pacjent
+
+Metody - czasowniki
+
+> np. zapisz, wyślij, zarejestruj, wypożycz
+
+Zmienne - rzeczowniki
+
+> Litera jako nazwa tylko jako licznik pętli
+---
+
+layout: false
+class: center middle
+
+## Nazwy - ćwiczenia
+
+---
+layout: false
+class: center middle
+
+## Budowa funkcji (metod)
+---
+## Po czym poznać dobrą metodę?
+
+Krótka
+
+Mało wcięć
+
+Robi jedną rzecz
+
+Mało paramterów
+
+---
+
+## Jak to osiągnąć?
+
+Podział metody na mniejsze
+
+Grupowanie parametrów w klasy
+
+---
+layout: false
+class: center middle
+
+## Metody - przykład
+
+---
+layout: false
+class: center middle
+
+## Metody - ćwiczenia
+
+---
+layout: false
+class: center middle
+
+## Klasy
+
+---
+## Cechy dobrej klasy
+
+Krótka
+
+Spójna
+
+Skupiona na zbliżonych zadaniach
+
+---
+## Heurystyki związane z klasami
+
+SOLID
+
+Prawo Demeter
+
+---
+## SOLID
+
+SRP - Single Responsibility Principle
+OCP - Open-Closed Principle
+LSP - Liskov Substitution Principle
+ISP - Interface Seperation Principle
+DIP - Dependency Inversion Principle
+
+---
+## SRP - Single Responsibility Principle
+---
+## SRP - Single Responsibility Principle
+---
+## OCP - Open-Closed Principle
+
+Otwarta na rozszerzenia - zamknięta na modyfikacje
+---
+## OCP - Open-Closed Principle
+---
+## LSP - Liskov Substitution Principle
+
+Przy wymianie różnych implementacji interfejsu system zachowuje się tak samo
+
+---
+## LSP - Liskov Substitution Principle
+---
+## ISP - Interface Seperation Principle
+---
+## ISP - Interface Seperation Principle
+---
+## DIP - Dependency Inversion Principle
+---
+## DIP - Dependency Inversion Principle
+
+---
+layout: false
+class: center middle
+
+## Prawo Demeter
+
+---
+layout: false
+class: center middle
+
+## Komentarze
+
+---
+layout: false
+class: center middle
+
+## Obsługa błędów
+
+---
+layout: false
+class: center middle
+
+## TDD
+---
+## TDD
+
+Red - green - refactor
+
+BDD
+
+---
+## Budowa testu
+
+Given
+
+When
+
+Then
+---
+## Czytelność testu
+
+(przykład ścierwa)
+
+---
+
+## Czytelny test
+
+(fixtures, assertions)
+
+---
+## Test fixtures
+
+---
+## Assertions
+
+
+---
+layout: false
+class: center middle
+
+## Czysty kod - podsumowanie
+
+---
+
+## Czysty kod - podsumowanie
+
+Odpowiadamy za to wszyscy
+
+Wszyscy musimy żyć ze złym kodem
+
+"Wybita szyba"
+
+"Boy Scout Rule"
+
+Refaktoryzacja
+
+---
+layout: false
+class: center middle
+
+## Boy Scout Rule
+
+Leave your code better than you found it
+
+---
+layout: false
+class: center middle
+
+## Boy Scout Rule
+
+Leave your code better than you found it
+
+(but not build national park around it)
+
+---
+layout: false
+class: center middle
+
+## Refaktoryzacja
+
+ulepszanie struktury istniejącego kodu, bez zmiany jego zachowania
+
+---
+## Techniki refaktoryzacji (niektóre :) )
+
+Zmiana nazwy zmiennej
+
+Ekstrakcja metody
+
+Ekstrakcja klasy
+
+---
 layout: false
 class: center middle
 
