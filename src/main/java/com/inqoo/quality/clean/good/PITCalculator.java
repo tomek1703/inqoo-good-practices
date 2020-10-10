@@ -6,8 +6,9 @@ import static com.inqoo.quality.clean.good.BigDecimalComparison.is;
 import static java.math.BigDecimal.*;
 import static java.math.RoundingMode.HALF_UP;
 
-public class TaxCalculator {
+public class PITCalculator {
 
+    // TODO: 11.10.2020 extract those constants to other class or inject them - this will decouple often changing values from no-changing tax calculation procedure
     private final BigDecimal firstTaxThreshold = valueOf(8000);
     private final BigDecimal secondTaxThreshold = valueOf(85528);
     private final BigDecimal solidarityTaxThreshold = valueOf(1000000);
@@ -19,43 +20,45 @@ public class TaxCalculator {
 
     public BigDecimal calculate(BigDecimal taxBase) {
         BigDecimal calculatedTax;
-        if (noTaxIsApplicable(taxBase)) {
+        if (taxIsNotApplicableFor(taxBase)) {
             calculatedTax = ZERO;
-        } else if (firstTaxRateIsApplicable(taxBase)) {
-            calculatedTax = taxForFirstTaxThreshold(taxBase);
-        } else if (secondTaxRateIsApplicable(taxBase)) {
-            calculatedTax = taxForSecondTaxThreshold(taxBase);
+        } else if (firstTaxRateIsApplicableFor(taxBase)) {
+            calculatedTax = calculateUsingFirstTaxThresholdFor(taxBase);
+        } else if (secondTaxRateIsApplicableFor(taxBase)) {
+            calculatedTax = calculateUsingSecondTaxThresholdFor(taxBase);
         } else {
-            calculatedTax = taxWithSolidarityTax(taxBase);
+            calculatedTax = calculateWithSolidarityTaxFor(taxBase);
         }
-        return calculatedTax.setScale(0, HALF_UP);
+        return rounded(calculatedTax);
     }
 
-    private boolean noTaxIsApplicable(BigDecimal taxBase) {
+    private boolean taxIsNotApplicableFor(BigDecimal taxBase) {
         return is(taxBase).notGreaterThan(firstTaxThreshold);
     }
 
-    private boolean firstTaxRateIsApplicable(BigDecimal taxBase) {
+    private boolean firstTaxRateIsApplicableFor(BigDecimal taxBase) {
         return is(taxBase).between(firstTaxThreshold).andInclusive(secondTaxThreshold);
     }
 
-    private BigDecimal taxForFirstTaxThreshold(BigDecimal taxBase) {
+    private BigDecimal calculateUsingFirstTaxThresholdFor(BigDecimal taxBase) {
         return taxBase.multiply(firstTaxRate)
                 .subtract(taxDeduction(taxBase));
     }
 
-    private boolean secondTaxRateIsApplicable(BigDecimal taxBase) {
+    private boolean secondTaxRateIsApplicableFor(BigDecimal taxBase) {
         return is(taxBase).between(secondTaxThreshold).andInclusive(solidarityTaxThreshold);
     }
 
-    private BigDecimal taxForSecondTaxThreshold(BigDecimal taxBase) {
+    private BigDecimal calculateUsingSecondTaxThresholdFor(BigDecimal taxBase) {
         return secondTaxThreshold.multiply(firstTaxRate)
                 .add((taxBase.subtract(secondTaxThreshold).multiply(secondTaxRate)))
                 .subtract(taxDeduction(taxBase));
     }
 
+    // TODO: 11.10.2020 calculating of tax deduction should be extracted to separated class
+    // tax deduction calculated according to https://www.e-pity.pl/kwota-wolna-od-podatku-pit-kalkulator/
     private BigDecimal taxDeduction(BigDecimal taxBase) {
-        return firstTaxRateIsApplicable(taxBase)
+        return firstTaxRateIsApplicableFor(taxBase)
                 ? deductionForFirstTaxThreshold(taxBase)
                 : deductionForSecondTaxThreshold(taxBase);
     }
@@ -68,14 +71,18 @@ public class TaxCalculator {
 
     private BigDecimal deductionForSecondTaxThreshold(BigDecimal taxBase) {
         return is(taxBase).notGreaterThan(valueOf(127000))
-                ? valueOf(525.12).subtract(valueOf(525.12).multiply (taxBase.subtract(secondTaxThreshold)).divide(valueOf(41472), HALF_UP))
+                ? valueOf(525.12).subtract(valueOf(525.12).multiply(taxBase.subtract(secondTaxThreshold)).divide(valueOf(41472), HALF_UP))
                 : ZERO;
     }
 
-    private BigDecimal taxWithSolidarityTax(BigDecimal taxBase) {
+    private BigDecimal calculateWithSolidarityTaxFor(BigDecimal taxBase) {
         return secondTaxThreshold.multiply(firstTaxRate)
                 .add(taxBase.subtract(secondTaxThreshold).multiply(secondTaxRate))
                 .add(taxBase.subtract(solidarityTaxThreshold).multiply(solidarityTaxRate));
+    }
+
+    private BigDecimal rounded(BigDecimal calculatedTax) {
+        return calculatedTax.setScale(0, HALF_UP);
     }
 }
 
@@ -95,6 +102,7 @@ class BigDecimalComparison {
         return this.referenceValue.compareTo(valueToCompare) < 1;
     }
 
+    // TODO: 11.10.2020 only this method uses firstBetweenOperand - maybe more specialized class for between for sake of better cohesion?
     BigDecimalComparison between(BigDecimal value) {
         firstBetweenOperand = value;
         return this;

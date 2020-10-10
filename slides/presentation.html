@@ -106,6 +106,12 @@ class: center middle
 
 Co to dla Was jest?
 
+Skąd wiecie że Wasza obecna praca ma właściwą jakość?
+
+---
+
+## Jakość w programowaniu
+
 Po czym poznajecie, że Wasz program jest dobrej jakości?
 
 ---
@@ -157,6 +163,11 @@ layout: false
 class: center middle
 
 ## Jakość - wymiar wewnętrzny
+
+---
+## Jakość - wymiar wewnętrzny
+
+Czy mieliście wrażenie, że kod Waszego programu przeszkadza Wam w programowaniu
 
 ---
 
@@ -218,49 +229,74 @@ Kod łatwy do zrozumienia i do zmiany
 
 ---
 
+layout: false
+class: center middle
+
+## Zobaczmy to na przykładzie
+
+---
+## Ćwiczenie - czytelność kodu
+
+Otwórz klasę `com.inqoo.quality.clean.bad.Calc`
+
+Uważnie przeczytaj kod metody `calculate`
+
+Co robi ta klasa? Jaka jest jej odpowiedzialność?
+
+Zastanów się na ile łatwa do zrozumienia jest ta klasa
+
+Wskaż co ułatwia Ci zrozumienie tego kodu, a co utrudnia
+
+Co by pomogło Ci zrozumieć ten kod
+
+10 minut
+
+---
+## Ćwiczenie - czytelność kodu
+
+Otwórz klasę `com.inqoo.quality.clean.good.PITCalculator`
+
+Uważnie przeczytaj kod metody `calculate`
+
+Co robi ta klasa? Jaka jest jej odpowiedzialność?
+
+Zastanów się na ile łatwa do zrozumienia jest ta klasa
+
+Wskaż co ułatwia Ci zrozumienie tego kodu, a co utrudnia
+
+Co by pomogło Ci zrozumieć ten kod
+
+10 minut
+
+---
+
+## Ćwiczenie  wnioski
+
+
+
+---
+
 ## Czysty kod
 
 Łatwy do zrozumienia
 
 Samodokumentujący
 
-"Czyta się jak książkę"
-
-Bardzo kontekstowy
-
----
-```
-public class Calc {
-    public BigDecimal get(BigDecimal base) {
-        BigDecimal res;
-        if (base.doubleValue() <= 8000) {
-            res =  BigDecimal.ZERO;
-        } else if (base.doubleValue() >= 8001 && base.doubleValue() <= 13000) {
-            res =  BigDecimal.valueOf(base.doubleValue() * 0.17 -
-                    (1360 - 834.88 * (base.doubleValue() - 8000) / 5000)).setScale(0, RoundingMode.HALF_UP);
-        } else if (base.doubleValue() >= 13001 && base.doubleValue() <= 85528) {
-            res =  BigDecimal.valueOf(base.doubleValue() * 0.17 - 525.12).setScale(0, RoundingMode.HALF_UP);
-        } else if (base.doubleValue() >= 85529 && base.doubleValue() <= 127000) {
-            res =  BigDecimal.valueOf(85528 * 0.17 + (base.doubleValue() - 85528) * 0.32 - (525.12 - (525.12 * (base.doubleValue() - 85528)) / 41472)).setScale(0, RoundingMode.HALF_UP);
-        } else if (base.doubleValue() >= 12701 && base.doubleValue() < 1000000) {
-            res =  BigDecimal.valueOf(85528 * 0.17 + (base.doubleValue() - 85528) * 0.32).setScale(0, RoundingMode.HALF_UP);
-        } else {
-            res =  BigDecimal.valueOf(85528 * 0.17 + (base.doubleValue() - 85528) * 0.32 + (base.doubleValue() - 1000000) * 0.04).setScale(0, RoundingMode.HALF_UP);
-        }
-        return res;
-    }
-}
-```
+"Czyta się jak książkę" - test Ivony
 
 ---
 
 ## Czysty kod
 
-> - Zrozumiałe nazwy klas, metod i zmiennych
-> - Budowa funkcji (metod)
-> - Klasy
-> - Komentarze
-> - Obsługa błędów
+Zrozumiałe nazwy klas, metod i zmiennych
+
+Budowa funkcji (metod)
+
+Klasy
+
+Komentarze
+
+Obsługa błędów
 
 ---
 
@@ -272,16 +308,18 @@ Nadające sens
 
 Mające znaczenie
 
+Zmniejszają do minimum liczbę potrzebnych komentarzy
+
 ---
 
 ## Nazwy
 
-Klasy - rzeczowniki
-> np. Osoba - Pracownik, Klient, Pacjent
+Klasy - rzeczowniki, na tyle szczegółowe na ile się da
+> np. Employee a nie Person
 
 Metody - czasowniki
 
-> np. zapisz, wyślij, zarejestruj, wypożycz
+> np. save, send, calculate
 
 Zmienne - rzeczowniki
 
@@ -292,6 +330,11 @@ layout: false
 class: center middle
 
 ## Nazwy - ćwiczenia
+
+---
+## Ćwiczenie
+
+
 
 ---
 layout: false
@@ -327,7 +370,7 @@ class: center middle
 layout: false
 class: center middle
 
-## Metody - ćwiczenia
+## Metody - ćwiczenie
 
 ---
 layout: false
@@ -355,9 +398,13 @@ Prawo Demeter
 ## SOLID
 
 SRP - Single Responsibility Principle
+
 OCP - Open-Closed Principle
+
 LSP - Liskov Substitution Principle
+
 ISP - Interface Seperation Principle
+
 DIP - Dependency Inversion Principle
 
 ---
@@ -399,49 +446,13 @@ class: center middle
 ## Komentarze
 
 ---
-layout: false
-class: center middle
+## Komentarze
 
-## Obsługa błędów
+Nie powinny zastępować czytelnych nazw w kodzie
 
----
-layout: false
-class: center middle
+Kod wymagający komentarzy jest jak dowcip wymagający tłumaczenia
 
-## TDD
----
-## TDD
-
-Red - green - refactor
-
-BDD
-
----
-## Budowa testu
-
-Given
-
-When
-
-Then
----
-## Czytelność testu
-
-(przykład ścierwa)
-
----
-
-## Czytelny test
-
-(fixtures, assertions)
-
----
-## Test fixtures
-
----
-## Assertions
-
-
+Powinny wyjaśniać rozumowanie za "dziwnym" miejscem w kodzie
 ---
 layout: false
 class: center middle
@@ -496,6 +507,45 @@ Zmiana nazwy zmiennej
 Ekstrakcja metody
 
 Ekstrakcja klasy
+
+
+---
+layout: false
+class: center middle
+
+## TDD
+---
+## TDD
+
+Red - green - refactor
+
+BDD
+
+---
+## Budowa testu
+
+Given
+
+When
+
+Then
+---
+## Czytelność testu
+
+(przykład ścierwa)
+
+---
+
+## Czytelny test
+
+(fixtures, assertions)
+
+---
+## Test fixtures
+
+---
+## Assertions
+
 
 ---
 layout: false
@@ -564,7 +614,7 @@ class: center middle
 
 # Thank you!
 
-    </textarea>
+</textarea>
 <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
 <script type="text/javascript">
       var slideshow = remark.create({

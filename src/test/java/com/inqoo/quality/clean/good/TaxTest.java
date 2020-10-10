@@ -17,10 +17,10 @@ public class TaxTest {
     @Parameters(method = "taxParams")
     public void calculateTax(BigDecimal base, BigDecimal expectedTax) {
         // given
-        TaxCalculator taxCalculator = new TaxCalculator();
+        PITCalculator PITCalculator = new PITCalculator();
 
         // when
-        BigDecimal calculatedTax = taxCalculator.calculate(base);
+        BigDecimal calculatedTax = PITCalculator.calculate(base);
 
         // then
         assertThat(calculatedTax).isEqualTo(expectedTax);
