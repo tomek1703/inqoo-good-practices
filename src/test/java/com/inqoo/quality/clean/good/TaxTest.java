@@ -1,6 +1,5 @@
 package com.inqoo.quality.clean.good;
 
-import com.inqoo.quality.clean.bad.Calc;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
@@ -18,10 +17,10 @@ public class TaxTest {
     @Parameters(method = "taxParams")
     public void calculateTax(BigDecimal base, BigDecimal expectedTax) {
         // given
-        Calc taxCalculator = new Calc();
+        TaxCalculator taxCalculator = new TaxCalculator();
 
         // when
-        BigDecimal calculatedTax = taxCalculator.get(base);
+        BigDecimal calculatedTax = taxCalculator.calculate(base);
 
         // then
         assertThat(calculatedTax).isEqualTo(expectedTax);
