@@ -82,11 +82,6 @@ Jakość
 
 Czysty kod
 
-> - Nazewnictwo
-> - Budowa funkcji (metod)
-> - Komentarze
-> - Klasy
-
 TDD
 
 Zespołowość
@@ -144,7 +139,7 @@ layout: false
 class: center middle
 
 ## Jakość "zewnętrzna" - czyli co?
-## Spełnione oczekiwania klientów
+### Spełnione oczekiwania klientów
 
 ---
 
@@ -193,7 +188,7 @@ layout: false
 class: center middle
 
 ## Jakość "wewnętrzna" - czyli co?
-## System tani w utrzymaniu!
+### System tani w utrzymaniu!
 
 ---
 
@@ -206,15 +201,6 @@ Czytelny i zrozumiały kod źródłowy
 Programowanie w parach (pair programming)
 
 Przegląd kodu (code review)
-
----
-
-layout: false
-class: center middle
-
-## Czysty kod (clean code)
-
-Kod łatwy do zmiany i do zrozumienia
 
 ---
 
@@ -270,8 +256,13 @@ Co by pomogło Ci zrozumieć ten kod
 
 ---
 
-## Ćwiczenie  wnioski
+## Ćwiczenie - wnioski
 
+Który kod był bardziej czytelny?
+
+Dlaczego?
+
+Czy o którymś z nich można powiedzieć "idealny"?
 
 
 ---
@@ -296,13 +287,17 @@ Klasy
 
 Komentarze
 
+Formatowanie
+
 Obsługa błędów
 
 ---
 
-## Nazwy
+## Dobre nazwy
 
 Opisowe
+
+Możliwie szczegółowe
 
 Nadające sens
 
@@ -312,10 +307,10 @@ Zmniejszają do minimum liczbę potrzebnych komentarzy
 
 ---
 
-## Nazwy
+## Dobre nazwy
 
-Klasy - rzeczowniki, na tyle szczegółowe na ile się da
-> np. Employee a nie Person
+Klasy - rzeczowniki
+> np. Employee, Reader, Student, Doctor
 
 Metody - czasowniki
 
@@ -324,6 +319,13 @@ Metody - czasowniki
 Zmienne - rzeczowniki
 
 > Litera jako nazwa tylko jako licznik pętli
+
+---
+layout: false
+class: center middle
+
+## Dobre i złe nazwy - przykłady
+
 ---
 
 layout: false
@@ -333,6 +335,7 @@ class: center middle
 
 ---
 ## Ćwiczenie
+
 
 
 
@@ -354,11 +357,15 @@ Mało paramterów
 
 ---
 
-## Jak to osiągnąć?
+## Jak pracować z metodami?
 
 Podział metody na mniejsze
 
 Grupowanie parametrów w klasy
+
+Podejście top-bottom, od najbardziej ogólnych do najbardziej szczegółowych
+
+Opakowywać złożone warunki logiczne w metody prywatne
 
 ---
 layout: false
@@ -387,6 +394,8 @@ Spójna
 
 Skupiona na zbliżonych zadaniach
 
+Zazwyczaj ma więcej metod prywatnych niż publicznych
+
 ---
 ## Heurystyki związane z klasami
 
@@ -409,8 +418,29 @@ DIP - Dependency Inversion Principle
 
 ---
 ## SRP - Single Responsibility Principle
+
+Klasa ma
+
+> - pojedynczą odpowiedzialność
+
+> - jeden powód do zmiany
+
+no, generalnie robi jedną rzecz
 ---
 ## SRP - Single Responsibility Principle
+
+"Robi jedną rzecz", czyli np.:
+
+Oblicza podatek
+
+Wypożycza książki
+
+Jest katalogiem klientów
+
+Przeprowadza operacje odczytu/zapisu/modyfikacji na bazie danych
+
+---
+## SRP - Single Responsibility Principle - przykłady
 ---
 ## OCP - Open-Closed Principle
 
