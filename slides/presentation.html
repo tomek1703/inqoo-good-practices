@@ -82,9 +82,9 @@ Jakość
 
 Czysty kod
 
-TDD
-
 Zespołowość
+
+TDD
 
 Object callisthenics
 
@@ -235,7 +235,15 @@ Wskaż co ułatwia Ci zrozumienie tego kodu, a co utrudnia
 
 Co by pomogło Ci zrozumieć ten kod
 
+Spróbuj
+
 10 minut
+
+---
+
+## Ćwiczenie - czytelność kodu
+
+Jak można ten kod poprawić?
 
 ---
 ## Ćwiczenie - czytelność kodu
@@ -263,7 +271,6 @@ Który kod był bardziej czytelny?
 Dlaczego?
 
 Czy o którymś z nich można powiedzieć "idealny"?
-
 
 ---
 
@@ -327,6 +334,175 @@ class: center middle
 ## Dobre i złe nazwy - przykłady
 
 ---
+
+## Wyrażanie intencji
+
+### Źle
+
+```
+int d;
+// elapsed time in days
+int ds;
+int dsm;
+int faid;
+```
+
+---
+## Wyrażanie intencji
+
+### Źle
+
+```
+int d;
+// elapsed time in days
+int ds;
+int dsm;
+int faid;
+```
+
+### Dobrze
+
+```
+int elapsedTimeInDays;
+int daysSinceCreation;
+int daysSinceModification;
+int fileAgeInDays;
+```
+---
+## Dezinformacja
+
+### Źle
+
+```
+Customer[] customerList;
+Table theTable;
+```
+---
+## Dezinformacja
+
+### Źle
+
+```
+Customer[] customerList;
+Table theTable;
+```
+
+### Dobrze
+
+```
+Customer[] customers;
+Table customers;
+```
+---
+
+## Długość nazw
+
+### Źle
+
+```
+List<Customer> theCustomersListWithAllCustomersIncludedWithoutFilter;
+````
+---
+
+## Długość nazw
+
+### Źle
+
+```
+List<Customer> theCustomersListWithAllCustomersIncludedWithoutFilter;
+````
+
+### Dobrze
+
+```
+List<Customer> allCustomers
+
+```
+---
+
+## Spójność nazw
+
+### Źle
+
+```
+
+void LoadSingleData()
+void FetchDataFiltered()
+void GetAllData()
+
+```
+---
+
+## Spójność nazw
+
+### Źle
+
+```
+
+void LoadSingleData()
+void FetchDataFiltered()
+void GetAllData()
+
+```
+
+### Dobrze
+
+```
+
+void GetSingleData()
+void GetDataFiltered()
+void GetAllData()
+
+```
+
+---
+## Nazwy dziedzinowe
+
+### Źle
+```
+public class EntitiesRelation {
+    Entity o1;
+    Entity o2;
+}
+```
+---
+## Nazwy dziedzinowe
+
+### Źle
+```
+public class EntitiesRelation {
+    Entity o1;
+    Entity o2;
+}
+```
+### Dobrze
+```
+public class ProductWithCategory
+{
+    Product product;
+    Category category;
+}
+```
+
+---
+## Nazwy kontekstowe
+
+## Źle
+```
+class Address{
+    String addressCity;
+    String addressHomeNumber;
+    String addressPostalCode;
+}
+```
+### Dobrze
+class Address{
+    String city;
+    String homeNumber;
+    String postalCode;
+}```
+
+```
 
 layout: false
 class: center middle
