@@ -1,4 +1,4 @@
-package com.inqoo.quality.clean.bad;
+package com.inqoo.quality.clean.example.bad;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

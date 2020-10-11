@@ -1,5 +1,6 @@
-package com.inqoo.quality.clean.bad;
+package com.inqoo.quality.clean.example.bad;
 
+import com.inqoo.quality.clean.example.bad.Calc;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;

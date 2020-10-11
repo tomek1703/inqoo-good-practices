@@ -1,5 +1,6 @@
-package com.inqoo.quality.clean.good;
+package com.inqoo.quality.clean.example.good;
 
+import com.inqoo.quality.clean.example.good.PITCalculator;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
