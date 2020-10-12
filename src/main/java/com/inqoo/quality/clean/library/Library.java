@@ -1,46 +1,94 @@
 package com.inqoo.quality.clean.library;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.Collections.unmodifiableSet;
+import static com.inqoo.quality.clean.library.BorrowOutcome.bookAlreadyBorrowedByReader;
+import static com.inqoo.quality.clean.library.BorrowOutcome.noAvailableCopies;
+import static com.inqoo.quality.clean.library.BorrowOutcome.notInCatalogue;
+import static com.inqoo.quality.clean.library.BorrowOutcome.readerNotEnrolled;
+import static com.inqoo.quality.clean.library.BorrowOutcome.success;
 
 public class Library {
-    private final Set<Book> catalogue = new HashSet<>();
-    private final Map<String, Integer> bookStore = new HashMap<>();
-    private final List<Reader> readers = new ArrayList<>();
+    private final Catalogue catalogue;
+    private final BookStore bookStore;
+    private final ReadersRegister readersRegister;
+    private final BookRentals bookRentals;
+
+    public Library() {
+        bookStore = new BookStore();
+        catalogue = new Catalogue();
+        readersRegister = new ReadersRegister();
+        bookRentals = new BookRentals();
+    }
 
     void addBook(Book book) {
         catalogue.add(book);
-        bookStore.merge(book.getIsbn(), 1, Integer::sum);
+        bookStore.add(book.getIsbn());
     }
 
-    Set<Book> all() {
-        return unmodifiableSet(catalogue);
+    void addBooks(Book book, int amount) {
+        catalogue.add(book);
+        bookStore.add(book.getIsbn(), amount);
+    }
+
+    int availableCopies(Book book) {
+        return bookStore.get(book.getIsbn());
+    }
+
+    Set<Book> getAll() {
+        return catalogue.getAll();
     }
 
     void enroll(Reader reader) {
-        readers.add(reader);
+        readersRegister.enroll(reader);
     }
 
     List<Reader> readers() {
-        return unmodifiableList(readers);
+        return readersRegister.readers();
     }
 
-    boolean borrow(Book book, Reader reader) {
-        if(!catalogue.contains(book)) {
-            return false;
+    BorrowOutcome borrow(Book book, Reader reader) {
+        if (!readersRegister.contains(reader)) {
+            return readerNotEnrolled;
         }
 
-        if(!readers.contains(reader)) {
-            return false;
+        if (!catalogue.contains(book)) {
+            return notInCatalogue;
         }
 
-        if(bookStore.get(book.getIsbn()) == 0) {
-            return false;
+        if (bookRentals.readerHasNoBookCopy(book, reader)) {
+            return bookAlreadyBorrowedByReader;
         }
 
-        bookStore.put(book.getIsbn(), bookStore.get(book.getIsbn())-1);
-        return true;
+        if (bookStore.get(book.getIsbn()) == 0) {
+            return noAvailableCopies;
+        }
+
+        bookStore.remove(book.getIsbn());
+        bookRentals.register(book, reader);
+        return success;
+    }
+
+    int availableAmont(ISBN isbn) {
+        return bookStore.get(isbn);
+    }
+
+    ReturnOutcome giveBack(Book book, Reader reader) {
+        if (!readersRegister.contains(reader)) {
+            return ReturnOutcome.readerNotEnrolled;
+        }
+
+        if (!catalogue.contains(book)) {
+            return ReturnOutcome.notInCatalogue;
+        }
+
+        if (bookRentals.readerHasNoBookCopy(book, reader)) {
+            return ReturnOutcome.bookNotBorrowedByReader;
+        }
+
+        bookStore.add(book.getIsbn());
+        bookRentals.unRegister(book, reader);
+        return ReturnOutcome.success;
     }
 }

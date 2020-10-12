@@ -2,61 +2,177 @@ package com.inqoo.quality.clean.library;
 
 import org.junit.Test;
 
+import static com.inqoo.quality.clean.library.BorrowOutcome.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LibraryTest {
 
-    @Test
-    public void bookIsAvailableAfterAddingToLibrary() {
-        // given
-        Library library = new Library();
-        // and
-        Book paleBlueDot = new Book("0-679-43841-6", "Carl Sagan", "Pale Blue Dot");
+    private final BookFixture bookFixture = new BookFixture();
+    private final Book paleBlueDot = bookFixture.paleBlueDot();
+    private final Library library = new Library();
+    private final ReadersFixture readersFixture = new ReadersFixture();
+    private final Reader johnSmith = readersFixture.johnSmith();
+    private final Reader janeDoe = readersFixture.janeDoe();
 
+    @Test
+    public void bookIsVisibleInCatalogue() {
         // when
-        library.addBook(paleBlueDot);
+        addPaleBlueDotToLibrary();
 
         // then
-        assertThat(library.all()).contains(paleBlueDot);
+        assertThat(library.getAll()).contains(paleBlueDot);
     }
 
     @Test
     public void newReaderEnrolls() {
-        // given
-        Library library = new Library();
-        // and
-        Reader reader = new Reader("John Smith");
-
         // when
-        library.enroll(reader);
+        enrollJonhSmith();
 
         // then
-        assertThat(library.readers()).contains(reader);
+        assertThat(library.readers()).contains(johnSmith);
+    }
+
+    @Test
+    public void cannotBorrowBookNotInCatalogue() {
+        // given
+        enrollJonhSmith();
+
+        // when
+        BorrowOutcome outcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(outcome).isEqualTo(notInCatalogue);
+    }
+
+    @Test
+    public void notEnrolledReaderCannotBorrow() {
+        // when
+        BorrowOutcome outcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(outcome).isEqualTo(readerNotEnrolled);
     }
 
     @Test
     public void borrowABook() {
         // given
-        Library library = new Library();
+        addPaleBlueDotToLibrary();
         // and
-        Book paleBlueDot = new Book("0-679-43841-6", "Carl Sagan", "Pale Blue Dot");
+        enrollJonhSmith();
+
+        // when
+        BorrowOutcome borrowOutcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(borrowOutcome).isEqualTo(BorrowOutcome.success);
         // and
-        Reader reader = new Reader("John Smith");
+        assertThat(library.availableAmont(paleBlueDot.getIsbn())).isEqualTo(0);
+    }
+
+    @Test
+    public void cannotBorrowBookWhenNoCopiesAvailable() {
+        // given
+        addPaleBlueDotToLibrary();
         // and
+        enrollJonhSmith();
+        // and
+        enrollJaneDoe();
+        // and
+        library.borrow(paleBlueDot, johnSmith);
+
+        // when
+        BorrowOutcome outcome = library.borrow(paleBlueDot, janeDoe);
+
+        // then
+        assertThat(outcome).isEqualTo(noAvailableCopies);
+    }
+
+    private void enrollJaneDoe() {
+        library.enroll(janeDoe);
+    }
+
+    @Test
+    public void seeSingleBookItemNumber() {
+        // given
+        addPaleBlueDotToLibrary();
+
+        // when
+        int amount = library.availableCopies(paleBlueDot);
+
+        // then
+        assertThat(amount).isEqualTo(1);
+    }
+
+    @Test
+    public void canSeeMultipleBookCopies() {
+        // given
+        library.addBooks(paleBlueDot, 2);
+        // and
+        enrollJonhSmith();
+        // and
+        enrollJaneDoe();
+
+        // when
+        BorrowOutcome outcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(outcome).isEqualTo(success);
+
+        // when
+        outcome = library.borrow(paleBlueDot, janeDoe);
+
+        // then
+        assertThat(outcome).isEqualTo(success);
+
+        // when
+        int amount = library.availableCopies(paleBlueDot);
+
+        // then
+        assertThat(amount).isEqualTo(0);
+    }
+
+    @Test
+    public void oneBookCannotBeBorrowedTwiceBySameReader() {
+        // given
+        addPaleBlueDotToLibrary();
+        // and
+        enrollJonhSmith();
+
+        // when
+        BorrowOutcome borrowOutcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(borrowOutcome).isEqualTo(success);
+
+        // when
+        borrowOutcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(borrowOutcome).isEqualTo(bookAlreadyBorrowedByReader);
+    }
+
+    @Test
+    public void bookIsReturned() {
+        // given
+        addPaleBlueDotToLibrary();
+        // and
+        enrollJonhSmith();
+
+        // when
+        BorrowOutcome borrowOutcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(borrowOutcome).isEqualTo(success);
+
+        // when
+        ReturnOutcome returnOutcome = library.giveBack(paleBlueDot, johnSmith);
+    }
+
+    private void enrollJonhSmith() {
+        library.enroll(johnSmith);
+    }
+
+    private void addPaleBlueDotToLibrary() {
         library.addBook(paleBlueDot);
-        // and
-        library.enroll(reader);
-
-        // when
-        boolean isSuccessful = library.borrow(paleBlueDot, reader);
-
-        // then
-        assertThat(isSuccessful).isTrue();
-
-        // when
-        isSuccessful = library.borrow(paleBlueDot, reader);
-
-        // then
-        assertThat(isSuccessful).isFalse();
     }
 }
