@@ -1,4 +1,4 @@
-package com.inqoo.quality.clean.library.referential;
+package com.inqoo.quality.clean.library.exercises.naming;
 
 import java.util.List;
 import java.util.Set;
