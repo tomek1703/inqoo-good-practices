@@ -187,6 +187,14 @@ class: center middle
 layout: false
 class: center middle
 
+## Był sobie projekt...
+
+
+---
+
+layout: false
+class: center middle
+
 ## Jakość "wewnętrzna" - czyli co?
 ### System tani w utrzymaniu!
 
@@ -245,6 +253,8 @@ Spróbuj
 
 Jak można ten kod poprawić?
 
+Spróbujecie?
+
 ---
 ## Ćwiczenie - czytelność kodu
 
@@ -302,7 +312,7 @@ Obsługa błędów
 
 ## Dobre nazwy
 
-Opisowe
+Zrozumiałe
 
 Możliwie szczegółowe
 
@@ -515,6 +525,31 @@ class Address{
     String postalCode;
 }
 ```
+
+
+---
+layout: false
+class: center middle
+
+## Ćwiczenia - wprowadzenie
+
+---
+## Ćwiczenia - wprowadzenie
+
+W pakiecie `com.inqoo.quality.clean.library.exercises` znajdziecie prosty program zarządzające biblioteką.
+
+Pracowała nad nim wynajęta firma outsourcingowa, która wbrew umowia dostarczyła <s>zasoby</s> ludzi z niżyszmi niż ustalone kompetencjami.
+Zamiast seniora i mida, było 1/8 seniora oraz 1 i 7/8 juniora po stawce _blended_ .
+
+Ze względu na RODO nie wiemy nawet w jakim kraju to powstawało i chyba wolimy nie wiedzieć.
+
+W ocenie wynajętej firmy konsultingowej z Lublina kod jest bardzo słabej jakości i klient może zakwestionować te prace.
+Konsultantom udało się napisać testy, potem skończył się budżet na ich usługi.
+
+Prawnicy pracują nad pozwem, ale proces nie ruszy przed deadlinem.
+
+No - musicie to wyprostować.
+
 ---
 layout: false
 class: center middle
@@ -524,7 +559,21 @@ class: center middle
 ---
 ## Ćwiczenie
 
-TODO
+Zacznijmy od klasy `Library`.
+
+Jest to punkt wejścia do całego modułu - czyli jedyna klasa publiczna w tym pakiecie. To jej metody będą wywoływać aplikacje
+mobilne czytelniczek oraz czytelników i _backoffice_ bibliotekarek oraz bibliotekarzy .
+
+Z raportu konsultantów wynika, że w tej klasie bezwzględnie trzeba poprawić nazwy:
+- pól tej klasy
+- metod klasy `Library`
+- klas do których `Library` się odnosi
+- metod klas do których `Library` się odnosi
+
+Wskazówki
+
+- W IntelliJ IDEA nazwy można zmienić skrótem Shift+F6
+- Pamiętajcie o wykonaniu testów po każdej zmianie
 
 ---
 layout: false

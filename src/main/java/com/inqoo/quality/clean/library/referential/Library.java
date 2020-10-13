@@ -7,12 +7,12 @@ import java.util.Set;
 // TODO: 13/10/2020 method exercise
 // TODO: 13/10/2020 classes exercise
 
-class Library {
+public class Library {
     private final ReadersRegister readersRegister;
     private final BookBorrow bookBorrow;
     private final Books books;
 
-    Library(ReadersRegister readersRegister, BookBorrow bookBorrow, Books books) {
+    public Library(ReadersRegister readersRegister, BookBorrow bookBorrow, Books books) {
         this.readersRegister = readersRegister;
         this.bookBorrow = bookBorrow;
         this.books = books;
