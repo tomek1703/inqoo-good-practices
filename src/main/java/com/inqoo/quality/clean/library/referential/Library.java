@@ -3,36 +3,35 @@ package com.inqoo.quality.clean.library.referential;
 import java.util.List;
 import java.util.Set;
 
+// TODO: 13/10/2020 naming exercise
+// TODO: 13/10/2020 method exercise
+// TODO: 13/10/2020 classes exercise
+
 class Library {
-    private final Catalogue catalogue;
-    private final BookWarehouse bookWarehouse;
     private final ReadersRegister readersRegister;
     private final BookBorrow bookBorrow;
+    private final Books books;
 
-    Library() {
-        bookWarehouse = new BookWarehouse();
-        catalogue = new Catalogue();
-        readersRegister = new ReadersRegister();
-        BorrowedBooksRegistry borrowedBookRegistry = new BorrowedBooksRegistry();
-        bookBorrow = new BookBorrow(catalogue, bookWarehouse, readersRegister, borrowedBookRegistry);
+    Library(ReadersRegister readersRegister, BookBorrow bookBorrow, Books books) {
+        this.readersRegister = readersRegister;
+        this.bookBorrow = bookBorrow;
+        this.books = books;
     }
 
     void addBook(Book book) {
-        catalogue.add(book);
-        bookWarehouse.add(book.getIsbn());
+        books.addBook(book);
     }
 
     void addBooks(Book book, int amount) {
-        catalogue.add(book);
-        bookWarehouse.add(book.getIsbn(), amount);
+        books.addBooks(book, amount);
     }
 
     int availableCopies(Book book) {
-        return bookWarehouse.availableCopiesAmount(book.getIsbn());
+        return books.availableCopies(book);
     }
 
     Set<Book> bookCatalogue() {
-        return catalogue.getAll();
+        return books.bookCatalogue();
     }
 
     void enroll(Reader reader) {
@@ -44,7 +43,7 @@ class Library {
     }
 
     int availableAmont(ISBN isbn) {
-        return bookWarehouse.availableCopiesAmount(isbn);
+        return books.availableCopiesAmount(isbn);
     }
 
     BorrowOutcome borrow(Book book, Reader reader) {

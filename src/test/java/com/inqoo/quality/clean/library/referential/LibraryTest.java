@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LibraryTest {
 
-    private final Library library = new Library();
+    private final Library library = new LibraryFactory().library();
     private final BookFixture bookFixture = new BookFixture();
     private final Book paleBlueDot = bookFixture.paleBlueDot();
     private final Book cleanCode = bookFixture.cleanCode();

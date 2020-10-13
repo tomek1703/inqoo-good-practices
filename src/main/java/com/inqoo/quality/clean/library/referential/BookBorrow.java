@@ -7,14 +7,12 @@ import static com.inqoo.quality.clean.library.referential.BorrowOutcome.readerNo
 import static com.inqoo.quality.clean.library.referential.BorrowOutcome.success;
 
 class BookBorrow {
-    private final Catalogue catalogue;
-    private final BookWarehouse bookWarehouse;
+    private Books books;
     private final ReadersRegister readersRegister;
     private final BorrowedBooksRegistry borrowedBooksRegistry;
 
-    BookBorrow(Catalogue catalogue, BookWarehouse bookWarehouse, ReadersRegister readersRegister, BorrowedBooksRegistry borrowedBookRegistry) {
-        this.catalogue = catalogue;
-        this.bookWarehouse = bookWarehouse;
+    BookBorrow(Books books, ReadersRegister readersRegister, BorrowedBooksRegistry borrowedBookRegistry) {
+        this.books = books;
         this.readersRegister = readersRegister;
         this.borrowedBooksRegistry = borrowedBookRegistry;
     }
@@ -36,7 +34,7 @@ class BookBorrow {
             return noAvailableCopies;
         }
 
-        bookWarehouse.take(book.getIsbn());
+        books.take(book.getIsbn());
         borrowedBooksRegistry.rent(book, reader);
         return success;
     }
@@ -46,11 +44,11 @@ class BookBorrow {
     }
 
     private boolean noBookCopiesAvailable(Book book) {
-        return bookWarehouse.availableCopiesAmount(book.getIsbn()) == 0;
+        return books.availableCopiesAmount(book.getIsbn()) == 0;
     }
 
     private boolean bookNotInCatalogue(Book book) {
-        return !catalogue.contains(book);
+        return !books.contains(book);
     }
 
     private boolean readerNotEnrolled(Reader reader) {
@@ -70,7 +68,7 @@ class BookBorrow {
             return ReturnOutcome.bookNotBorrowedByReader;
         }
 
-        bookWarehouse.add(book.getIsbn());
+        books.add(book.getIsbn());
         borrowedBooksRegistry.returnBook(book, reader);
         return ReturnOutcome.success;
     }
