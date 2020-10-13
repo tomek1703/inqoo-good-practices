@@ -1,4 +1,4 @@
-package com.inqoo.quality.clean.library;
+package com.inqoo.quality.clean.library.referential;
 
 enum BorrowOutcome {
     notInCatalogue,

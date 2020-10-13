@@ -1,4 +1,4 @@
-package com.inqoo.quality.clean.library;
+package com.inqoo.quality.clean.library.referential;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,7 +8,7 @@ import static java.util.Collections.unmodifiableSet;
 class Catalogue {
     private final Set<Book> catalogue;
 
-    public Catalogue() {
+    Catalogue() {
         catalogue = new HashSet<>();
     }
 

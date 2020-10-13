@@ -1,13 +1,14 @@
-package com.inqoo.quality.clean.library;
+package com.inqoo.quality.clean.library.referential;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.unmodifiableList;
 
 class ReadersRegister {
     private final List<Reader> readers;
 
-    public ReadersRegister() {
+    ReadersRegister() {
         readers = new ArrayList<>();
     }
 
@@ -15,8 +16,9 @@ class ReadersRegister {
         readers.add(reader);
     }
 
+    // TODO: 13/10/2020 add formatting to slides
     List<Reader> readers() {
-        return Collections.unmodifiableList(readers);
+        return unmodifiableList(readers);
     }
 
     boolean contains(Reader reader) {

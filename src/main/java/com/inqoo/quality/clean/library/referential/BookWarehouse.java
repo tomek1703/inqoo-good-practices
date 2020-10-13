@@ -1,12 +1,12 @@
-package com.inqoo.quality.clean.library;
+package com.inqoo.quality.clean.library.referential;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class BookStore {
+class BookWarehouse {
     private final Map<ISBN, Integer> bookStore;
 
-    BookStore() {
+    BookWarehouse() {
         bookStore = new HashMap<>();
     }
 
@@ -18,11 +18,11 @@ class BookStore {
         bookStore.merge(isbn, amount, Integer::sum);
     }
 
-    int get(ISBN isbn) {
+    int availableCopiesAmount(ISBN isbn) {
         return bookStore.get(isbn);
     }
 
-    void remove(ISBN isbn) {
+    void take(ISBN isbn) {
         bookStore.put(isbn, bookStore.get(isbn) - 1);
     }
 }

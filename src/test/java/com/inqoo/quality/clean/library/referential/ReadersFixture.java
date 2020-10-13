@@ -1,9 +1,8 @@
-package com.inqoo.quality.clean.library;
+package com.inqoo.quality.clean.library.referential;
 
-public class ReadersFixture {
-    public ReadersFixture() {
-    }
+import com.inqoo.quality.clean.library.referential.Reader;
 
+class ReadersFixture {
     Reader johnSmith() {
         return new Reader("John Smith");
     }

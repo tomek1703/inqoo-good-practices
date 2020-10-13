@@ -1,15 +1,16 @@
-package com.inqoo.quality.clean.library;
+package com.inqoo.quality.clean.library.referential;
 
 import org.junit.Test;
 
-import static com.inqoo.quality.clean.library.BorrowOutcome.*;
+import static com.inqoo.quality.clean.library.referential.BorrowOutcome.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LibraryTest {
 
+    private final Library library = new Library();
     private final BookFixture bookFixture = new BookFixture();
     private final Book paleBlueDot = bookFixture.paleBlueDot();
-    private final Library library = new Library();
+    private final Book cleanCode = bookFixture.cleanCode();
     private final ReadersFixture readersFixture = new ReadersFixture();
     private final Reader johnSmith = readersFixture.johnSmith();
     private final Reader janeDoe = readersFixture.janeDoe();
@@ -20,7 +21,7 @@ public class LibraryTest {
         addPaleBlueDotToLibrary();
 
         // then
-        assertThat(library.getAll()).contains(paleBlueDot);
+        assertThat(library.bookCatalogue()).contains(paleBlueDot);
     }
 
     @Test
@@ -29,7 +30,7 @@ public class LibraryTest {
         enrollJonhSmith();
 
         // then
-        assertThat(library.readers()).contains(johnSmith);
+        assertThat(library.enrolledReaders()).contains(johnSmith);
     }
 
     @Test
@@ -166,6 +167,69 @@ public class LibraryTest {
 
         // when
         ReturnOutcome returnOutcome = library.giveBack(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(returnOutcome).isEqualTo(ReturnOutcome.success);
+    }
+
+    @Test
+    public void cannotReturnBookForNotEnrolledReader() {
+        // given
+        addPaleBlueDotToLibrary();
+
+        // when
+        ReturnOutcome returnOutcome = library.giveBack(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(returnOutcome).isEqualTo(ReturnOutcome.readerNotEnrolled);
+    }
+
+    @Test
+    public void cannotReturnBookThatIsNotInCatalogue() {
+        // given
+        enrollJonhSmith();
+
+        // when
+        ReturnOutcome returnOutcome = library.giveBack(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(returnOutcome).isEqualTo(ReturnOutcome.notInCatalogue);
+    }
+
+    @Test
+    public void cannotReturnBookThatWasNotBorrowedByReader() {
+        // given
+        enrollJonhSmith();
+        // and
+        addPaleBlueDotToLibrary();
+
+        // when
+        ReturnOutcome returnOutcome = library.giveBack(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(returnOutcome).isEqualTo(ReturnOutcome.bookNotBorrowedByReader);
+    }
+
+    @Test
+    public void readerCanBorrowTwoBooks () {
+        // given
+        enrollJonhSmith();
+        // and
+        addPaleBlueDotToLibrary();
+        // and
+        addCleanCodeToLibrary();
+
+        // when
+        BorrowOutcome borrowOutcome = library.borrow(paleBlueDot, johnSmith);
+
+        // then
+        assertThat(borrowOutcome).isEqualTo(success);
+
+        // when
+        borrowOutcome = library.borrow(cleanCode, johnSmith);
+
+        // then
+        assertThat(borrowOutcome).isEqualTo(success);
     }
 
     private void enrollJonhSmith() {
@@ -174,5 +238,9 @@ public class LibraryTest {
 
     private void addPaleBlueDotToLibrary() {
         library.addBook(paleBlueDot);
+    }
+
+    private void addCleanCodeToLibrary() {
+        library.addBook(cleanCode);
     }
 }
