@@ -1,5 +1,7 @@
 package com.inqoo.quality.clean.library.referential;
 
+// TODO: clean up methods
+
 import static com.inqoo.quality.clean.library.referential.BorrowOutcome.bookAlreadyBorrowedByReader;
 import static com.inqoo.quality.clean.library.referential.BorrowOutcome.noAvailableCopies;
 import static com.inqoo.quality.clean.library.referential.BorrowOutcome.notInCatalogue;
@@ -7,7 +9,7 @@ import static com.inqoo.quality.clean.library.referential.BorrowOutcome.readerNo
 import static com.inqoo.quality.clean.library.referential.BorrowOutcome.success;
 
 class BookBorrow {
-    private Books books;
+    private final Books books;
     private final ReadersRegister readersRegister;
     private final BorrowedBooksRegistry borrowedBooksRegistry;
 

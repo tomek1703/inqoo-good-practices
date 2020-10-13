@@ -541,12 +541,13 @@ W pakiecie `com.inqoo.quality.clean.library.exercises` znajdziecie prosty progra
 Pracowała nad nim wynajęta firma outsourcingowa, która wbrew umowia dostarczyła <s>zasoby</s> ludzi z niżyszmi niż ustalone kompetencjami.
 Zamiast seniora i mida, było 1/8 seniora oraz 1 i 7/8 juniora po stawce _blended_ .
 
-Ze względu na RODO nie wiemy nawet w jakim kraju to powstawało i chyba wolimy nie wiedzieć.
+Ze względu na RODO nie wiemy nawet w jakim kraju to powstawało i chyba wolimy nie wiedzieć. Domena .in w historii gita wywołała lekkie
+przerażenie u _solution architecta_.
 
 W ocenie wynajętej firmy konsultingowej z Lublina kod jest bardzo słabej jakości i klient może zakwestionować te prace.
 Konsultantom udało się napisać testy, potem skończył się budżet na ich usługi.
 
-Prawnicy pracują nad pozwem, ale proces nie ruszy przed deadlinem.
+Prawnicy pracują nad pozwem, ale proces nie ruszy przed deadlinem o wyroku nie wspominając.
 
 No - musicie to wyprostować.
 
@@ -614,6 +615,8 @@ class: center middle
 
 ## Metody - przykład
 
+Wróćmy do naszego kalkulatora podatkowego
+
 ---
 layout: false
 class: center middle
@@ -622,8 +625,15 @@ class: center middle
 ---
 ## Metody - ćwiczenie
 
-TODO
-TODO
+Czas na ciąg dalszy pracy nad naszą biblioteką. W pakiecie `com.inqoo.quality.clean.library.exercise` znajdziesz klasę
+z komentarzem `// TODO: clean up methods`. Ona również przykuła uwagę naszych konsultantów i na pewno przykuje uwagę
+audytorów przy przekazywaniu projektu.
+
+Zwróćcie uwagę na metody. Są one bardzo skomplikowane i nieczytelne. O dziwo nazewnictwo jest na niezłym poziomie,
+prawdopodobnie pisał to ten regular developer na 1/8 etatu.
+
+Pamiętajcie o testach!
+
 ---
 layout: false
 class: center middle
@@ -691,14 +701,127 @@ Przeprowadza operacje odczytu/zapisu/modyfikacji na bazie danych
 Wywołuje inne metody na innej klasie
 
 ---
-## SRP - przykład
+## SRP - przykłady
+```
+   public class Library {
+    private final Books books;
+    private final ReadersRegister readersRegister;
+    private final BookBorrow bookBorrow;
+
+    void addBook(Book book) {
+        books.addBook(book);
+    }
+    int availableCopies(Book book) {
+        return books.availableCopies(book);
+    }
+    void enroll(Reader reader) {
+        readersRegister.enroll(reader);
+    }
+    List<Reader> enrolledReaders() {
+        return readersRegister.readers();
+    }
+    BorrowOutcome borrow(Book book, Reader reader) {
+        return bookBorrow.borrow(book, reader);
+    }
+    ReturnOutcome giveBack(Book book, Reader reader) {
+        return bookBorrow.giveBack(book, reader);
+    }
+}
+
+```
+---
+## SRP - przykłady
+```
+   class BookBorrow {
+    private final Books books;
+    private final ReadersRegister readersRegister;
+    private final BorrowedBooksRegistry borrowedBooksRegistry;
+
+    BorrowOutcome borrow(Book book, Reader reader) {...}
+    private boolean readerAlreadyBorrowedTheBook(Book book, Reader reader) {...}
+    private boolean noBookCopiesAvailable(Book book) {...}
+    private boolean bookNotInCatalogue(Book book) {...}
+    private boolean readerNotEnrolled(Reader reader) {...}
+
+    ReturnOutcome giveBack(Book book, Reader reader) {...}
+    private boolean bookIsNotBorrowedByReader(Book book, Reader reader) {...}
+}
+```
 ---
 ## OCP - Open-Closed Principle
 
 Otwarta na rozszerzenia - zamknięta na modyfikacje
 
 ---
-## OCP - Open-Closed Principle
+## OCP - przykład
+```
+// only readers related code
+public class Library {
+    private final List<Reader> readers;
+
+    void enroll(Reader reader) {
+        readers.add(reader);
+    }
+
+    List<Reader> enrolledReaders() {
+        return unmodifiableList(readers);
+    }
+}
+```
+Co jeśli będziemy chcieli zmienić to na `Set<Reader>`?
+Albo na `Map`?
+Albo na bazę danych?
+Albo na plik?
+
+---
+## OCP - przykład lepszy
+```
+public class Library {
+    private final ReadersRegister readersRegister;
+
+    void enroll(Reader reader) {readersRegister.enroll(reader);}
+
+    List<Reader> enrolledReaders() {return readersRegister.readers();}
+}
+
+class ReadersRegister {
+    private final List<Reader> readers;
+
+    void enroll(Reader reader) {readers.add(reader);}
+    List<Reader> readers() {return unmodifiableList(readers);}
+}
+```
+Lepiej, ale trzeba będzie zmienić `ReadersRegister`
+---
+## OCP - przykład jeszcze lepszy
+```
+public class Library {
+    private final ReadersRegister readersRegister;
+
+    void enroll(Reader reader) {readersRegister.enroll(reader);}
+    List<Reader> enrolledReaders() {return readersRegister.readers();}
+}
+
+interface ReadersRegister {
+    void enroll(Reader reader);
+    List<Reader> readers();
+}
+
+class InMemoryReadersRegister implements ReadersRegister {
+    private final List<Reader> readers;
+
+    void enroll(Reader reader) {readers.add(reader);}
+    List<Reader> readers() {return unmodifiableList(readers);}
+    boolean contains(Reader reader) {return readers.contains(reader);}
+}
+```
+
+W razie potrzeby dokładamy nową implementację interfejsu
+
+Nowa implementacja interfejsu - rozszerzenie
+
+Brak modyfikacji istniejącego kodu, lub minimalna zmiana konfiguracji.
+
 ---
 ## LSP - Liskov Substitution Principle
 
@@ -707,21 +830,152 @@ Przy wymianie różnych implementacji interfejsu system zachowuje się tak samo
 ---
 ## LSP - przykłady
 
-TODO
+Czym się charakteryzuje  `List<>` ?
+
+---
+## LSP - przykłady
+
+Czym się charakteryzuje  `List<>` ?
+
+Elementy mogą się powtarzać
+
+Elementy są wstawiane na koniec.
+
+Tak działa `ArrayList<>` i `LinkedList<>`
+
+---
+## LSP - przykłady
+
+Co jesli napiszemy własną implementację listy której:
+
+Elementy będą mogły się powtarzać?
+
+Będzie dodawać elementy na początek?
+
+Niespełniony kontrakt, testy nie przejdą - złamana LSP!
 
 ---
 ## ISP - Interface Seperation Principle
+
+Do użytkownika/klienta danego interfejsu dostępne jest tylko to z czego korzysta
 ---
-## ISP - przykłady
+## ISP - przykład
+```
+public class Library implements BookFacade, ReaderFacade {
+    public void addBook(Book book){...}
+    public void addBooks(Book book, int amount){...}
+    public int availableCopies(Book book){...}
+    public Set<Book> bookCatalogue(){...}
+    public void enroll(Reader reader){...}
+    public List<Reader> enrolledReaders(){...}
+    public int availableAmount(ISBN isbn){...}
+    public BorrowOutcome borrow(Book book, Reader reader){...}
+    public ReturnOutcome giveBack(Book book, Reader reader){...}
+}
+```
 
-TODO
+Z czym są związane te metody?
+---
+## ISP - przykład
+```
+public interface BookFacade {
+    void addBook(Book book);
+    void addBooks(Book book, int amount);
+    int availableCopies(Book book);
+    Set<Book> bookCatalogue();
+    int availableAmount(ISBN isbn);
+    BorrowOutcome borrow(Book book, Reader reader);
+    ReturnOutcome giveBack(Book book, Reader reader);
+}
+```
+```
+public interface ReaderFacade {
+    void enroll(Reader reader);
+    List<Reader> enrolledReaders();
+}
 
+```
+```
+public class Library implements BookFacade, ReaderFacade{...}
+```
 ---
 ## DIP - Dependency Inversion Principle
----
-## DIP - przykłady
 
-TODO
+Moduły wysokiego poziomu nie powinny zależeć od modułów niskiego poziomu. Oba powinny zależeć od abstrakcji.
+
+Abstrakcje nie powinny zależeć od detali. Detale powinny zależeć od abstrakcji.
+
+"Zależy" = kod zależy do tego do czego ma referencję
+---
+## DIP - przykład
+
+Podobnie jak OCP, ale inaczej
+
+```
+// only readers related code
+public class Library {
+    private final List<Reader> readers;
+
+    void enroll(Reader reader) {
+        readers.add(reader);
+    }
+
+    List<Reader> enrolledReaders() {
+        return unmodifiableList(readers);
+    }
+}
+```
+`Library` zależy bezpośrednio od `List`.
+---
+## DIP - przykład lepszy
+```
+public class Library {
+    private final ReadersRegister readersRegister;
+
+    void enroll(Reader reader) {readersRegister.enroll(reader);}
+
+    List<Reader> enrolledReaders() {return readersRegister.readers();}
+}
+
+class ReadersRegister {
+    private final List<Reader> readers;
+
+    void enroll(Reader reader) {readers.add(reader);}
+    List<Reader> readers() {return unmodifiableList(readers);}
+}
+```
+Co tu zależy od czego?
+
+Od czego zależy `Library`?
+
+Co zależy od `List`?
+
+---
+## DIP - przykład jeszcze lepszy
+```
+public class Library {
+    private final ReadersRegister readersRegister;
+
+    void enroll(Reader reader) {readersRegister.enroll(reader);}
+    List<Reader> enrolledReaders() {return readersRegister.readers();}
+}
+
+interface ReadersRegister {
+    void enroll(Reader reader);
+    List<Reader> readers();
+}
+
+class InMemoryReadersRegister implements ReadersRegister {
+    private final List<Reader> readers;
+
+    void enroll(Reader reader) {readers.add(reader);}
+    List<Reader> readers() {return unmodifiableList(readers);}
+    boolean contains(Reader reader) {return readers.contains(reader);}
+}
+```
+Od czego zależy `Library` teraz?
+
+Od czego zależy `InMemoryReadersRegister`?
 
 ---
 layout: false
@@ -748,8 +1002,28 @@ Metoda danego obiektu może odwoływać się jedynie do metod należących do:
 
 ---
 
-## Prawo Demeter - przykłady
+## Prawo Demeter - przykład
 
+Antywzorzec Train wreck
+```
+    crocodile.getStomach().put(sausage);
+
+```
+
+---
+## Prawo Demeter - przykład
+
+```
+    crocodile.feed(sausage);
+
+    class Crocodile() {
+        Stomach stomach;
+        feed(Food food) {
+            stomach.put(food);
+        }
+    }
+
+```
 
 ---
 layout: false
@@ -760,6 +1034,19 @@ class: center middle
 ---
 
 ## Klasy - ćwiczenie
+
+Wróćmy do naszej biblioteki.
+
+Ostatnim punktem w raporcie doradców był fatalny stan klasy z komentarzem
+
+`// TODO: class cleanup`.
+
+Klasa ta teoretycznie powinna zarządzać katalogiem książek oraz ich magazynem.
+
+Robi to, niestety łamie przy tym kilka omówionych przed chwilą dobrych praktyk, co klient na pewno wytknie przy odbiorze aplikacji.
+
+Musisz zacząć działać.
+
 
 ---
 layout: false
@@ -781,11 +1068,19 @@ Nie powinny zastępować czytelnych nazw w kodzie
 Kod wymagający komentarzy jest jak dowcip wymagający tłumaczenia
 
 Powinny wyjaśniać rozumowanie za "dziwnym" miejscem w kodzie
+
 ---
 layout: false
 class: center middle
 
 ## Czysty kod - podsumowanie
+
+---
+layout: false
+class: center middle
+
+## Czysty kod - podsumowanie
+Wasze wnioski, uwagi, spostrzeżenia?
 
 ---
 
@@ -876,13 +1171,25 @@ class: center middle
 
 ## TDD
 ---
-## TDD
+layout: false
+background-image: url(tdd_flow.gif)
+background-size: contain
+background-repeat: no-repeat
+background-position: bottom
+class: center top
+---
+## Dlaczego TDD?
 
-Red - green - refactor
+_Fail_ testu na początku cyklu gwarantuje że nie przetestujemy przez przypadek nie tego co trzeba
 
-BDD
+Wcielamy się w rolę użytkownika naszego kodu
 
-TODO <obrazek></obrazek>
+Narzuca dyscyplinę małych, metodycznych kroków
+
+Krok _refactor_ zmusza do troski o jakość kodu
+
+Działa! Są na to badania
+
 ---
 ## Budowa testu
 
@@ -899,7 +1206,15 @@ Then
 > Sprawdzamy wynik tego co testujemy
 
 ---
+## Jakośc kodu testowego
 
+Powinna być jak najwyższa
+
+Testy to nie jest kod drugiej kategorii
+
+Testy to także dokumentacja
+
+---
 ## Test fixtures
 
 Klasy odpowiedzialne za przygotowanie danych testowych
@@ -919,6 +1234,21 @@ class BookFixture {
 ---
 ## Assertions
 
+Do opakowywanie asercji można użyć metod prywatnych, by poprawić czytelność. Np.:
+```
+assertThat(result).isTrue()
+```
+
+Można wyrazić
+
+```
+assertThatOperationIsSuccessful()
+...
+
+void assertThatOperationIsSuccessful() {
+    assertThat(result).isTrue()
+}
+```
 
 ---
 layout: false
@@ -932,10 +1262,11 @@ class: center middle
 Utwórz klasę StringCalculator z metodą
 
 ```
-int Add(String numbers)
+int add(String numbers)
 ```
 Metoda przyjmuje do dwóch liczb odzdzielonych przecinkami i zwraca ich sumę,
-np. "", "1", "1,2"
+
+np. `""`, `"1"`, `"1,2"`
 
 Pusty napis zwraca 0.
 
@@ -946,25 +1277,31 @@ Metoda `add` powinna obsługiwać dowolną liczbę liczb
 ---
 ## TDD - String Calculator - krok 3
 
-Metoda `add` powinna przyjmować znak nowej lini zamiast przecinka:
+Metoda `add` powinna przyjmować znak nowej linii zamiast przecinka:
 
-Np. sekwencja "1\n2,3” jest poprawna i zwraca 6.
+Np. sekwencja `"1\n2,3"` jest poprawna i zwraca 6
 
-Celem wyjaśnienia:“1,\n” nie jest poprawna
+Celem wyjaśnienia:`"1,\n"` nie jest poprawna
 ---
 ## TDD - String Calculator - krok 4
 
-Wspieraj różne rozgraniczniki.
+Wspieraj różne rozgraniczniki, nie tylko przecinek
 
-By zmienić znak rozgraniczający na początku napisu będzie umieszczona linia postaci "//[delimiter]\n[numbers…]", np. "//;\n1;2"
-zwróci 3, a znak rozgraniczający to ";"
+By zmienić znak rozgraniczający na początku napisu będzie umieszczona linia postaci
+
+`"//[delimiter]\n[numbers…]"`
+
+np. `"//;\n1;2"`
+zwróci 3
+
+a znak rozgraniczający to `";"`
 
 Pierwsza linia jest opcjonalna. Wszystkie poprzednie scenariusze mają działać.
 
 ---
 ## TDD - String Calculator - krok 5
 
-Wywołanie dodawania z liczbą ujemną powinno wyrzucić wyjątek z wiadomością “negatives not allowed” - i liczbami ujemnymi, które spowodowały błąd.
+Wywołanie dodawania z liczbą ujemną powinno wyrzucić wyjątek z wiadomością "negatives not allowed" i liczbami ujemnymi, które spowodowały błąd.
 
 Jeśli liczb ujemnych jest więcej pokaż jest wszystkie
 
@@ -973,17 +1310,33 @@ Jeśli liczb ujemnych jest więcej pokaż jest wszystkie
 
 Liczby większe niż 1000 powinny być ignorowane, czyli:
 
-2 + 1001 = 2
+`2 + 1001 = 2`
 
 ---
 ## TDD - String Calculator - krok 7
 
-Rozgraniczniki mogą być dowolnej długości: “//[delimiter]\n”, na przykład: “//[***]\n1***2***3” daje w wyniku 6.
+Rozgraniczniki mogą być dowolnej długości
+
+`"//[delimiter]\n"`
+
+na przykład:
+
+`"//[***]\n1***2***3"`
+
+daje w wyniku 6.
 
 ---
 ## TDD - String Calculator - krok 8
 
-Można użyć wielu rozgraniczników: “//[delim1][delim2]\n”, na przykłąd “//[*][%]\n1*2%3” daje w wyniku 6.
+Można użyć wielu rozgraniczników:
+
+`"//[delim1][delim2]\n"`
+
+na przykład
+
+`"//[*][%]\n1*2%3"`
+
+daje w wyniku 6.
 
 ---
 ## TDD - String Calculator - krok 9
@@ -1180,16 +1533,13 @@ When there are no coins inserted, the machine displays INSERT COIN. Rejected coi
 ---
 ## Vending machine - feature 2
 
-
 There are three products: cola for $1.00, chips for $0.50, and candy for $0.65.
 
 When the respective button is pressed and enough money has been inserted, the product is dispensed and the machine displays THANK YOU.
 
-If the display is checked again, it will display INSERT COIN and the current amount will be set to $0.00.
+When product is collected, it will display INSERT COIN and the current amount will be set to $0.00.
 
-If there is not enough money inserted then the machine displays PRICE and the price of the item and subsequent checks of the display
-
-will display either INSERT COIN or the current amount as appropriate.
+If there is not enough money inserted then the machine displays INSERT COIN and PRICE and the price of the item.
 
 ---
 ## Vending machine - feature 3
@@ -1199,20 +1549,18 @@ When a product is selected that costs less than the amount of money in the machi
 ---
 ## Vending machine - feature 4
 
-When the return coins button is pressed, the money the customer has placed in the machine is returned and the display shows INSERT COIN.
+When the "return coins" button is pressed, the money the customer has placed in the machine is returned and the display shows INSERT COIN.
 
 ---
 ## Vending machine - feature 5
 
-When the item selected by the customer is out of stock, the machine displays SOLD OUT.
-
-If the display is checked again, it will display the amount of money remaining in the machine or INSERT COIN if there is no money in the machine.
-
+When the item selected by the customer is out of stock, the machine displays SOLD OUT and return money.
 
 ---
 ## Vending machine - feature 6
 
-When the machine is not able to make change with the money in the machine for any of the items that it sells, it will display EXACT CHANGE ONLY instead of INSERT COIN.
+When the machine is not able to make change with the money in the machine for any of the items that it sells,
+it will display EXACT CHANGE ONLY instead of INSERT COIN.
 
 
 
@@ -1287,7 +1635,7 @@ class: center middle
 
 # Thank you!
 
-</textarea>
+</Reader></textarea>
 <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript"></script>
 <script type="text/javascript">
       var slideshow = remark.create({

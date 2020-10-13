@@ -2,6 +2,8 @@ package com.inqoo.quality.clean.library.referential;
 
 import java.util.Set;
 
+// TODO: class cleanup
+
 class Books {
     private final Catalogue catalogue;
     private final BookWarehouse bookWarehouse;
