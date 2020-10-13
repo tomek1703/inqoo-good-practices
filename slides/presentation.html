@@ -487,7 +487,19 @@ public class ProductWithCategory
 ---
 ## Nazwy kontekstowe
 
-## Źle
+### Źle
+```
+class Address{
+    String addressCity;
+    String addressHomeNumber;
+    String addressPostalCode;
+}
+```
+
+---
+## Nazwy kontekstowe
+
+### Źle
 ```
 class Address{
     String addressCity;
@@ -616,7 +628,7 @@ Przeprowadza operacje odczytu/zapisu/modyfikacji na bazie danych
 Wywołuje inne metody na innej klasie
 
 ---
-## SRP - Single Responsibility Principle - przykłady
+## SRP - przykład
 ---
 ## OCP - Open-Closed Principle
 
@@ -630,21 +642,50 @@ Otwarta na rozszerzenia - zamknięta na modyfikacje
 Przy wymianie różnych implementacji interfejsu system zachowuje się tak samo
 
 ---
-## LSP - Liskov Substitution Principle - przykłady
+## LSP - przykłady
+
+TODO
+
 ---
 ## ISP - Interface Seperation Principle
 ---
-## ISP - Interface Seperation Principle - przykłady
+## ISP - przykłady
+
+TODO
+
 ---
 ## DIP - Dependency Inversion Principle
 ---
-## DIP - Dependency Inversion Principle - przykłady
+## DIP - przykłady
+
+TODO
 
 ---
 layout: false
 class: center middle
 
 ## Prawo Demeter
+
+---
+
+## Prawo Demeter
+
+Nie rozmawiaj z nieznajomymi
+
+---
+
+## Prawo Demeter bardziej formalnie
+
+Metoda danego obiektu może odwoływać się jedynie do metod należących do:
+
+- tego samego obiektu
+- dowolnego parametru przekazanego do niej
+- dowolnego obiektu przez nią stworzonego
+- dowolnego składnika klasy, do której należy dana metoda
+
+---
+
+## Prawo Demeter - przykłady
 
 
 ---
@@ -768,25 +809,113 @@ Red - green - refactor
 
 BDD
 
+TODO <obrazek></obrazek>
 ---
 ## Budowa testu
 
 Given
 
+> Przygotowanie testu
+
 When
 
+> Wykonanie operacji, której wynik chcemy sprawdzić
+
 Then
+
+> Sprawdzamy wynik tego co testujemy
+
 ---
 
 ## Test fixtures
+
+Klasy odpowiedzialne za przygotowanie danych testowych
+
+```
+class BookFixture {
+    Book paleBlueDot() {
+        return new Book(ISBN.of("0-679-43841-6"), "Carl Sagan", "Pale Blue Dot");
+    }
+
+    Book cleanCode() {
+        return new Book(ISBN.of("978-0132350884"), "Robert C. Martin", "Clean Code");
+    }
+}
+```
 
 ---
 ## Assertions
 
 
+---
+layout: false
+class: center middle
 
+## TDD - String Calculator
 
+---
+## TDD - String Calculator - krok 1
 
+Utwórz klasę StringCalculator z metodą
+
+```
+int Add(String numbers)
+```
+Metoda przyjmuje do dwóch liczb odzdzielonych przecinkami i zwraca ich sumę,
+np. "", "1", "1,2"
+
+Pusty napis zwraca 0.
+
+---
+## TDD - String Calculator - krok 2
+
+Metoda `add` powinna obsługiwać dowolną liczbę liczb
+---
+## TDD - String Calculator - krok 3
+
+Metoda `add` powinna przyjmować znak nowej lini zamiast przecinka:
+
+Np. sekwencja "1\n2,3” jest poprawna i zwraca 6.
+
+Celem wyjaśnienia:“1,\n” nie jest poprawna
+---
+## TDD - String Calculator - krok 4
+
+Wspieraj różne rozgraniczniki.
+
+By zmienić znak rozgraniczający na początku napisu będzie umieszczona linia postaci "//[delimiter]\n[numbers…]", np. "//;\n1;2"
+zwróci 3, a znak rozgraniczający to ";"
+
+Pierwsza linia jest opcjonalna. Wszystkie poprzednie scenariusze mają działać.
+
+---
+## TDD - String Calculator - krok 5
+
+Wywołanie dodawania z liczbą ujemną powinno wyrzucić wyjątek z wiadomością “negatives not allowed” - i liczbami ujemnymi, które spowodowały błąd.
+
+Jeśli liczb ujemnych jest więcej pokaż jest wszystkie
+
+---
+## TDD - String Calculator - krok 6
+
+Liczby większe niż 1000 powinny być ignorowane, czyli:
+
+2 + 1001 = 2
+
+---
+## TDD - String Calculator - krok 7
+
+Rozgraniczniki mogą być dowolnej długości: “//[delimiter]\n”, na przykład: “//[***]\n1***2***3” daje w wyniku 6.
+
+---
+## TDD - String Calculator - krok 8
+
+Można użyć wielu rozgraniczników: “//[delim1][delim2]\n”, na przykłąd “//[*][%]\n1*2%3” daje w wyniku 6.
+
+---
+## TDD - String Calculator - krok 9
+
+Zapewnij że program wspiera wiele wieloznakowych rozgraniczników
 
 ---
 ## Materiały dodatkowe

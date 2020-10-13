@@ -3,7 +3,8 @@ package com.inqoo.quality.clean.example.good;
 import java.math.BigDecimal;
 
 import static com.inqoo.quality.clean.example.good.BigDecimalComparison.is;
-import static java.math.BigDecimal.*;
+import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_UP;
 
 public class PITCalculator {

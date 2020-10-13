@@ -1,8 +1,5 @@
 package com.inqoo.quality.clean.library.referential;
 
-import com.inqoo.quality.clean.library.referential.Book;
-import com.inqoo.quality.clean.library.referential.ISBN;
-
 class BookFixture {
     Book paleBlueDot() {
         return new Book(ISBN.of("0-679-43841-6"), "Carl Sagan", "Pale Blue Dot");
