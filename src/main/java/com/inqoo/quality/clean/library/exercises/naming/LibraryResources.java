@@ -1,30 +1,37 @@
 package com.inqoo.quality.clean.library.exercises.naming;
 
+import java.util.Map;
 import java.util.Set;
 
 // TODO: class cleanup
 
-class Books {
+class LibraryResources {
     private final Catalogue catalogue;
     private final BookWarehouse bookWarehouse;
 
-    Books(Catalogue catalogue, BookWarehouse bookWarehouse) {
+    LibraryResources(Catalogue catalogue, BookWarehouse bookWarehouse) {
         this.catalogue = catalogue;
         this.bookWarehouse = bookWarehouse;
     }
 
     void addBook(Book book) {
-        catalogue.add(book);
-        bookWarehouse.add(book.getIsbn());
+        catalogue.getCatalogue().add(book);
+        Map<ISBN, Integer> bookStore = bookWarehouse.getBookStore();
+        if (bookStore.containsKey(book.getIsbn())) {
+            int amount = bookStore.get(book.getIsbn());
+            bookStore.put(book.getIsbn(), amount);
+        } else {
+            bookStore.put(book.getIsbn(), 1);
+        }
     }
 
     void addBooks(Book book, int amount) {
-        catalogue.add(book);
+        catalogue.getCatalogue().add(book);
         bookWarehouse.add(book.getIsbn(), amount);
     }
 
     int availableCopies(Book book) {
-        return bookWarehouse.availableCopiesAmount(book.getIsbn());
+        return bookWarehouse.getBookStore().getOrDefault(book.getIsbn(), 0);
     }
 
     Set<Book> bookCatalogue() {

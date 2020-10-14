@@ -19,10 +19,14 @@ class BookWarehouse {
     }
 
     int availableCopiesAmount(ISBN isbn) {
-        return bookStore.get(isbn);
+        return bookStore.getOrDefault(isbn, 0);
     }
 
     void take(ISBN isbn) {
         bookStore.put(isbn, bookStore.get(isbn) - 1);
+    }
+
+    public Map<ISBN, Integer> getBookStore() {
+        return bookStore;
     }
 }

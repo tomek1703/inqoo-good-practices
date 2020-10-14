@@ -5,10 +5,10 @@ import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
-class ReadersRegister {
+class ReadersManager {
     private final List<Reader> readers;
 
-    ReadersRegister() {
+    ReadersManager() {
         readers = new ArrayList<>();
     }
 
@@ -16,7 +16,6 @@ class ReadersRegister {
         readers.add(reader);
     }
 
-    // TODO: 13/10/2020 add formatting to slides
     List<Reader> readers() {
         return unmodifiableList(readers);
     }

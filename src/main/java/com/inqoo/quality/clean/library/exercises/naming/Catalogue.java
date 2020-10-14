@@ -23,4 +23,8 @@ class Catalogue {
     boolean contains(Book book) {
         return catalogue.contains(book);
     }
+
+    public Set<Book> getCatalogue() {
+        return catalogue;
+    }
 }

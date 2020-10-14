@@ -3,15 +3,15 @@ package com.inqoo.quality.clean.library.exercises.naming;
 import java.util.Set;
 
 public interface BookFacade {
-    void addBook(Book book);
+    void putBook(Book book);
 
     void addBooks(Book book, int amount);
 
-    int availableCopies(Book book);
+    int fetchBookAmounts(Book book);
 
-    Set<Book> bookCatalogue();
+    Set<Book> getBooks();
 
-    BorrowOutcome borrow(Book book, Reader reader);
+    BorrowOutcome provideBook(Book book, Reader reader);
 
-    ReturnOutcome giveBack(Book book, Reader reader);
+    ReturnOutcome returns(Book book, Reader reader);
 }

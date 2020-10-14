@@ -326,16 +326,16 @@ Zmniejszają do minimum liczbę potrzebnych komentarzy
 
 ## Dobre nazwy
 
-Klasy - rzeczowniki
+Klasy - najczęściej rzeczowniki
 > np. Employee, Reader, Student, Doctor
 
-Metody - czasowniki
+Metody - najczęsciej czasowniki
 
 > np. save, send, calculate
 
 Zmienne - rzeczowniki
 
-> Litera jako nazwa tylko jako licznik pętli
+> Litera jako nazwa tylko jako licznik pętli, współrzędna punktu itp.
 
 ---
 layout: false
@@ -636,7 +636,16 @@ Grupowanie parametrów w klasy
 
 Podejście top-bottom, od najbardziej ogólnych do najbardziej szczegółowych
 
+Nie zwracamy `null`
+---
+
+## Warunki logiczne
+
 Opakowywać złożone warunki logiczne w metody prywatne
+
+Przy każdym `if` musi być nawias `{`
+
+W kaskadzie `if` warto spróbować zrozumieć (nawet narysować) warunki - może warto to przearanżować
 
 ---
 layout: false
@@ -655,8 +664,11 @@ class: center middle
 ## Metody - ćwiczenie
 
 Czas na ciąg dalszy pracy nad naszą biblioteką. W pakiecie `com.inqoo.quality.clean.library.exercise` znajdziesz klasę
-z komentarzem `// TODO: clean up methods`. Ona również przykuła uwagę naszych konsultantów i na pewno przykuje uwagę
-audytorów przy przekazywaniu projektu.
+z komentarzem
+
+` // TODO: clean up methods `
+
+Ona również przykuła uwagę naszych konsultantów i na pewno przykuje uwagę audytorów przy przekazywaniu projektu.
 
 Zwróćcie uwagę na metody. Są one bardzo skomplikowane i nieczytelne. O dziwo nazewnictwo jest na niezłym poziomie,
 prawdopodobnie pisał to ten regular developer na 1/8 etatu.
@@ -732,7 +744,7 @@ Wywołuje inne metody na innej klasie
 ---
 ## SRP - przykłady
 ```
-   public class Library {
+public class Library {
     private final Books books;
     private final ReadersRegister readersRegister;
     private final BookBorrow bookBorrow;
@@ -761,7 +773,7 @@ Wywołuje inne metody na innej klasie
 ---
 ## SRP - przykłady
 ```
-   class BookBorrow {
+class BookBorrow {
     private final Books books;
     private final ReadersRegister readersRegister;
     private final BorrowedBooksRegistry borrowedBooksRegistry;
@@ -897,7 +909,6 @@ public class Library implements BookFacade, ReaderFacade {
     public Set<Book> bookCatalogue(){...}
     public void enroll(Reader reader){...}
     public List<Reader> enrolledReaders(){...}
-    public int availableAmount(ISBN isbn){...}
     public BorrowOutcome borrow(Book book, Reader reader){...}
     public ReturnOutcome giveBack(Book book, Reader reader){...}
 }
@@ -912,7 +923,6 @@ public interface BookFacade {
     void addBooks(Book book, int amount);
     int availableCopies(Book book);
     Set<Book> bookCatalogue();
-    int availableAmount(ISBN isbn);
     BorrowOutcome borrow(Book book, Reader reader);
     ReturnOutcome giveBack(Book book, Reader reader);
 }
@@ -1033,6 +1043,7 @@ Metoda danego obiektu może odwoływać się jedynie do metod należących do:
 
 ## Prawo Demeter - przykład
 
+### Żle
 Antywzorzec Train wreck
 ```
     crocodile.getStomach().put(sausage);
@@ -1041,6 +1052,15 @@ Antywzorzec Train wreck
 
 ---
 ## Prawo Demeter - przykład
+
+### Żle
+
+Antywzorzec Train wreck
+```
+    crocodile.getStomach().put(sausage);
+
+```
+### Dobrze
 
 ```
     crocodile.feed(sausage);
@@ -1053,6 +1073,7 @@ Antywzorzec Train wreck
     }
 
 ```
+
 
 ---
 layout: false
