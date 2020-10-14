@@ -23,7 +23,7 @@ class BorrowManager {
         if (readersRegistry.contains(reader) &&
                 books.contains(book) &&
                 !borrowedBooksRegistry.readerHasBookCopy(book, reader) &&
-                books.availableCopies(book) == 0
+                books.availableCopies(book) > 0
         ) {
             books.take(book.getIsbn());
             borrowedBooksRegistry.rent(book, reader);
