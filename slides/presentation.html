@@ -1072,8 +1072,22 @@ Antywzorzec Train wreck
         }
     }
 
+
+```
+---
+## Prawo Demeter - WAŻNE
+
+Tzw. fluent API, np. Stream nie łamie tej zasady
+
+```
+List.of(1, -1, 2, -3)
+    .stream()
+    .filter(item -> item < 0)
+    .map(item -> new String(item)
+    .collect(toList())
 ```
 
+Nie rozkładamy tu niczego na czynniki pierwsze, każde wywołanie zwraca nam nowy obiekt.o
 
 ---
 layout: false
@@ -1126,7 +1140,9 @@ class: center middle
 ## Formatowanie
 
 ---
-## Formatowanie - wewnątrz klasy
+## Formatowanie
+
+Używajmy importów statycznych, jeśli to poprawi czytelność kodu
 
 Pola i metody statyczne na górze klasy
 
@@ -1331,7 +1347,7 @@ Utwórz klasę StringCalculator z metodą
 ```
 int add(String numbers)
 ```
-Metoda przyjmuje do dwóch liczb odzdzielonych przecinkami i zwraca ich sumę,
+Metoda przyjmuje do dwóch liczb oddzielonych przecinkami i zwraca ich sumę,
 
 np. `""`, `"1"`, `"1,2"`
 
@@ -1341,6 +1357,8 @@ Pusty napis zwraca 0.
 ## TDD - String Calculator - krok 2
 
 Metoda `add` powinna obsługiwać dowolną liczbę liczb
+
+Np. `"1,2,3"` zwraca 6
 ---
 ## TDD - String Calculator - krok 3
 
