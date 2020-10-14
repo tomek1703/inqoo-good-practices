@@ -1,10 +1,12 @@
-package com.inqoo.quality.clean.library.referential;
+package com.inqoo.quality.clean.library.exercises.naming;
 
-import static com.inqoo.quality.clean.library.referential.BorrowOutcome.bookAlreadyBorrowedByReader;
-import static com.inqoo.quality.clean.library.referential.BorrowOutcome.noAvailableCopies;
-import static com.inqoo.quality.clean.library.referential.BorrowOutcome.notInCatalogue;
-import static com.inqoo.quality.clean.library.referential.BorrowOutcome.readerNotEnrolled;
-import static com.inqoo.quality.clean.library.referential.BorrowOutcome.success;
+// TODO: clean up methods
+
+import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.bookAlreadyBorrowedByReader;
+import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.noAvailableCopies;
+import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.notInCatalogue;
+import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.readerNotEnrolled;
+import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.success;
 
 class BookBorrow {
     private final Books books;

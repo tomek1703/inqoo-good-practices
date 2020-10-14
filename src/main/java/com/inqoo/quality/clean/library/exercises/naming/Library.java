@@ -1,7 +1,11 @@
-package com.inqoo.quality.clean.library.referential;
+package com.inqoo.quality.clean.library.exercises.naming;
 
 import java.util.List;
 import java.util.Set;
+
+// TODO: 13/10/2020 naming exercise
+// TODO: 13/10/2020 method exercise
+// TODO: 13/10/2020 classes exercise
 
 public class Library implements BookFacade, ReaderFacade {
     private final ReadersRegister readersRegister;

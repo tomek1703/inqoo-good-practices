@@ -67,7 +67,7 @@ public class LibraryTest {
         // then
         assertThat(borrowOutcome).isEqualTo(BorrowOutcome.success);
         // and
-        assertThat(library.availableAmount(paleBlueDot.getIsbn())).isEqualTo(0);
+        assertThat(library.availableCopies(paleBlueDot)).isEqualTo(0);
     }
 
     @Test

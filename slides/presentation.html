@@ -499,7 +499,7 @@ public class ProductWithCategory
 
 ### Źle
 ```
-class Address{
+class Address {
     String addressCity;
     String addressHomeNumber;
     String addressPostalCode;
@@ -511,7 +511,7 @@ class Address{
 
 ### Źle
 ```
-class Address{
+class Address {
     String addressCity;
     String addressHomeNumber;
     String addressPostalCode;
@@ -519,14 +519,42 @@ class Address{
 ```
 ### Dobrze
 ```
-class Address{
+class Address {
     String city;
     String homeNumber;
     String postalCode;
 }
 ```
+---
+## Nazwy możliwie szczegółowe
 
+## Żle
+```
+class CarManager {
+    void rent(Car car){...};
+    void giveCarBack(Car car){...};
+}
 
+```
+---
+## Nazwy możliwie szczegółowe
+
+## Żle
+```
+class CarManager {
+    void rent(Car car){...};
+    void giveCarBack(Car car){...};
+}
+
+```
+## Dobrze
+```
+class CarRental {
+    void rent(Car car){...};
+    void giveCarBack(Car car){...};
+}
+
+```
 ---
 layout: false
 class: center middle
@@ -539,7 +567,7 @@ class: center middle
 W pakiecie `com.inqoo.quality.clean.library.exercises` znajdziecie prosty program zarządzające biblioteką.
 
 Pracowała nad nim wynajęta firma outsourcingowa, która wbrew umowia dostarczyła <s>zasoby</s> ludzi z niżyszmi niż ustalone kompetencjami.
-Zamiast seniora i mida, było 1/8 seniora oraz 1 i 7/8 juniora po stawce _blended_ .
+Zamiast seniora i regulara, było 1/8 regulara oraz 1 i 7/8 juniora po stawce _blended_ .
 
 Ze względu na RODO nie wiemy nawet w jakim kraju to powstawało i chyba wolimy nie wiedzieć. Domena .in w historii gita wywołała lekkie
 przerażenie u _solution architecta_.
@@ -560,16 +588,17 @@ class: center middle
 ---
 ## Ćwiczenie
 
-Zacznijmy od klasy `Library`.
+Zacznijmy od klasy `LibraryManager`.
 
 Jest to punkt wejścia do całego modułu - czyli jedyna klasa publiczna w tym pakiecie. To jej metody będą wywoływać aplikacje
-mobilne czytelniczek oraz czytelników i _backoffice_ bibliotekarek oraz bibliotekarzy .
+mobilne czytelniczek oraz czytelników i _backoffice_ bibliotekarek oraz bibliotekarzy.
 
 Z raportu konsultantów wynika, że w tej klasie bezwzględnie trzeba poprawić nazwy:
+- samej klasy `LibraryManager`
 - pól tej klasy
-- metod klasy `Library`
-- klas do których `Library` się odnosi
-- metod klas do których `Library` się odnosi
+- metod klasy `LibraryManager`
+- klas do których `LibraryManager` się odnosi
+- metod klas do których `LibraryManager` się odnosi
 
 Wskazówki
 
@@ -1068,6 +1097,23 @@ Nie powinny zastępować czytelnych nazw w kodzie
 Kod wymagający komentarzy jest jak dowcip wymagający tłumaczenia
 
 Powinny wyjaśniać rozumowanie za "dziwnym" miejscem w kodzie
+
+---
+layout: false
+class: center middle
+
+## Formatowanie
+
+---
+## Formatowanie - wewnątrz klasy
+
+Pola i metody statyczne na górze klasy
+
+Pola klasy
+
+Konstruktory
+
+Metody
 
 ---
 layout: false
