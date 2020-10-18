@@ -2,7 +2,7 @@ package com.inqoo.quality.clean.library.referential;
 
 class LibraryFactory {
     Library library() {
-        ReadersRegister readersRegister = new ReadersRegister();
+        ReadersRegisterList readersRegister = new ReadersRegisterList();
         Books books = new Books(new Catalogue(), new BookWarehouse());
         BorrowedBooksRegistry borrowedBookRegistry = new BorrowedBooksRegistry();
         BookBorrow bookBorrow = new BookBorrow(books, readersRegister, borrowedBookRegistry);

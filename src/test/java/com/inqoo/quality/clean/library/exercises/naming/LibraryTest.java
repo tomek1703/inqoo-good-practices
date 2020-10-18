@@ -69,9 +69,13 @@ public class LibraryTest {
         BorrowOutcome borrowOutcome = readerTriesToBorrowBook(paleBlueDot, johnSmith);
 
         // then
-        assertThat(borrowOutcome).isEqualTo(BorrowOutcome.success);
+        bookHasBeenSuccessfullyBorrowed(borrowOutcome);
         // and
         assertThat(libraryManager.fetchBookAmounts(paleBlueDot)).isEqualTo(0);
+    }
+
+    private void bookHasBeenSuccessfullyBorrowed(BorrowOutcome borrowOutcome) {
+        assertThat(borrowOutcome).isEqualTo(BorrowOutcome.success);
     }
 
     @Test

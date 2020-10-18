@@ -1,6 +1,5 @@
 package com.inqoo.quality.clean.example.good;
 
-import com.inqoo.quality.clean.example.good.PITCalculator;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
@@ -8,6 +7,7 @@ import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 
+import static java.math.BigDecimal.valueOf;
 import static junitparams.JUnitParamsRunner.$;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +18,7 @@ public class TaxTest {
     @Parameters(method = "taxParams")
     public void calculateTax(BigDecimal base, BigDecimal expectedTax) {
         // given
-        PITCalculator PITCalculator = new PITCalculator();
+        PITCalculator PITCalculator = new PITCalculator(valueOf(8000), valueOf(85528), valueOf(1000000), new BigDecimal("0.17"), new BigDecimal("0.32"), new BigDecimal("0.04"));
 
         // when
         BigDecimal calculatedTax = PITCalculator.calculate(base);

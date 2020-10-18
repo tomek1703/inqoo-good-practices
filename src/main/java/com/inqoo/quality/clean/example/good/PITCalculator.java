@@ -10,14 +10,22 @@ import static java.math.RoundingMode.HALF_UP;
 public class PITCalculator {
 
     // TODO: 11.10.2020 extract those constants to other class or inject them - this will decouple often changing values from no-changing tax calculation procedure
-    private final BigDecimal firstTaxThreshold = valueOf(8000);
-    private final BigDecimal secondTaxThreshold = valueOf(85528);
-    private final BigDecimal solidarityTaxThreshold = valueOf(1000000);
+    private final BigDecimal firstTaxThreshold;
+    private final BigDecimal secondTaxThreshold;
+    private final BigDecimal solidarityTaxThreshold;
 
-    private final BigDecimal firstTaxRate = new BigDecimal("0.17");
-    private final BigDecimal secondTaxRate = new BigDecimal("0.32");
-    private final BigDecimal solidarityTaxRate = new BigDecimal("0.04");
+    private final BigDecimal firstTaxRate;
+    private final BigDecimal secondTaxRate;
+    private final BigDecimal solidarityTaxRate;
 
+    public PITCalculator(BigDecimal firstTaxThreshold, BigDecimal secondTaxThreshold, BigDecimal solidarityTaxThreshold, BigDecimal firstTaxRate, BigDecimal secondTaxRate, BigDecimal solidarityTaxRate) {
+        this.firstTaxThreshold = firstTaxThreshold;
+        this.secondTaxThreshold = secondTaxThreshold;
+        this.solidarityTaxThreshold = solidarityTaxThreshold;
+        this.firstTaxRate = firstTaxRate;
+        this.secondTaxRate = secondTaxRate;
+        this.solidarityTaxRate = solidarityTaxRate;
+    }
 
     public BigDecimal calculate(BigDecimal taxBase) {
         BigDecimal calculatedTax;
@@ -43,7 +51,7 @@ public class PITCalculator {
 
     private BigDecimal calculateUsingFirstTaxThresholdFor(BigDecimal taxBase) {
         return taxBase.multiply(firstTaxRate)
-                .subtract(taxDeduction(taxBase));
+                      .subtract(taxDeduction(taxBase));
     }
 
     private boolean secondTaxRateIsApplicableFor(BigDecimal taxBase) {
@@ -52,8 +60,8 @@ public class PITCalculator {
 
     private BigDecimal calculateUsingSecondTaxThresholdFor(BigDecimal taxBase) {
         return secondTaxThreshold.multiply(firstTaxRate)
-                .add((taxBase.subtract(secondTaxThreshold).multiply(secondTaxRate)))
-                .subtract(taxDeduction(taxBase));
+                                 .add((taxBase.subtract(secondTaxThreshold).multiply(secondTaxRate)))
+                                 .subtract(taxDeduction(taxBase));
     }
 
     // TODO: 11.10.2020 calculating of tax deduction should be extracted to separated class
@@ -78,8 +86,8 @@ public class PITCalculator {
 
     private BigDecimal calculateWithSolidarityTaxFor(BigDecimal taxBase) {
         return secondTaxThreshold.multiply(firstTaxRate)
-                .add(taxBase.subtract(secondTaxThreshold).multiply(secondTaxRate))
-                .add(taxBase.subtract(solidarityTaxThreshold).multiply(solidarityTaxRate));
+                                 .add(taxBase.subtract(secondTaxThreshold).multiply(secondTaxRate))
+                                 .add(taxBase.subtract(solidarityTaxThreshold).multiply(solidarityTaxRate));
     }
 
     private BigDecimal rounded(BigDecimal calculatedTax) {

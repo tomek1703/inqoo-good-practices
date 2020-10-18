@@ -15,23 +15,17 @@ class LibraryResources {
     }
 
     void addBook(Book book) {
-        catalogue.getCatalogue().add(book);
-        Map<ISBN, Integer> bookStore = bookWarehouse.getBookStore();
-        if (bookStore.containsKey(book.getIsbn())) {
-            int amount = bookStore.get(book.getIsbn());
-            bookStore.put(book.getIsbn(), amount);
-        } else {
-            bookStore.put(book.getIsbn(), 1);
-        }
+        catalogue.add(book);
+        bookWarehouse.add(book.getIsbn());
     }
 
     void addBooks(Book book, int amount) {
-        catalogue.getCatalogue().add(book);
+        catalogue.add(book);
         bookWarehouse.add(book.getIsbn(), amount);
     }
 
     int availableCopies(Book book) {
-        return bookWarehouse.getBookStore().getOrDefault(book.getIsbn(), 0);
+        return bookWarehouse.availableCopiesAmount(book.getIsbn());
     }
 
     Set<Book> bookCatalogue() {

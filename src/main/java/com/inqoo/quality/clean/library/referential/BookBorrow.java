@@ -8,10 +8,10 @@ import static com.inqoo.quality.clean.library.referential.BorrowOutcome.success;
 
 class BookBorrow {
     private final Books books;
-    private final ReadersRegister readersRegister;
+    private final ReadersRegisterList readersRegister;
     private final BorrowedBooksRegistry borrowedBooksRegistry;
 
-    BookBorrow(Books books, ReadersRegister readersRegister, BorrowedBooksRegistry borrowedBookRegistry) {
+    BookBorrow(Books books, ReadersRegisterList readersRegister, BorrowedBooksRegistry borrowedBookRegistry) {
         this.books = books;
         this.readersRegister = readersRegister;
         this.borrowedBooksRegistry = borrowedBookRegistry;

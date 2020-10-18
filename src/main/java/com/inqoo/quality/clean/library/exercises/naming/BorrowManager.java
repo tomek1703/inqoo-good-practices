@@ -20,6 +20,7 @@ class BorrowManager {
     }
 
     BorrowOutcome borrow(Book book, Reader reader) {
+
         if (readersRegistry.contains(reader) &&
                 books.contains(book) &&
                 !borrowedBooksRegistry.readerHasBookCopy(book, reader) &&
@@ -28,8 +29,7 @@ class BorrowManager {
             books.take(book.getIsbn());
             borrowedBooksRegistry.rent(book, reader);
             return success;
-        }
-
+        } else
         if (!readersRegistry.contains(reader)) {
             return readerNotEnrolled;
         } else if (!books.contains(book)) {

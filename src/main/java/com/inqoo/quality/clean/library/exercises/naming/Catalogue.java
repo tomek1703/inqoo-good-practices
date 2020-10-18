@@ -24,7 +24,4 @@ class Catalogue {
         return catalogue.contains(book);
     }
 
-    public Set<Book> getCatalogue() {
-        return catalogue;
-    }
 }

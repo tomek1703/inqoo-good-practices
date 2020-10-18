@@ -26,7 +26,7 @@ class BookWarehouse {
         bookStore.put(isbn, bookStore.get(isbn) - 1);
     }
 
-    public Map<ISBN, Integer> getBookStore() {
-        return bookStore;
-    }
+//    public Map<ISBN, Integer> getBookStore() {
+//        return bookStore;
+//    }
 }
