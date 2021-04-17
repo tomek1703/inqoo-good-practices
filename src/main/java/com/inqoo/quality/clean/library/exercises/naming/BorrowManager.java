@@ -43,17 +43,14 @@ class BorrowManager {
     }
 
     ReturnOutcome giveBack(Book book, Reader reader) {
-        if (!readersRegistry.contains(reader)) {
+        if (!readersRegistry.contains(reader))
             return ReturnOutcome.readerNotEnrolled;
-        }
 
-        if (!books.contains(book)) {
+        if (!books.contains(book))
             return ReturnOutcome.notInCatalogue;
-        }
 
-        if (borrowedBooksRegistry.readerHasNoBookCopy(book, reader)) {
+        if (borrowedBooksRegistry.readerHasNoBookCopy(book, reader))
             return ReturnOutcome.bookNotBorrowedByReader;
-        }
 
         books.add(book.getIsbn());
         borrowedBooksRegistry.returnBook(book, reader);

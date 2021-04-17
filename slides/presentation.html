@@ -73,19 +73,16 @@ Członek rady programowej Silesia JUG
 ---
 ## Kontrakt
 
-Reżim sanitarny (maseczki, odległości)
-
-Pilnujemy przerw w czasie części wykładowo-ćwiczeniowej
-
-W czasie warsztatów nie ma sztywnych przerw, można wychodzić
+W czasie warsztatów nie ma sztywnych przerw
 
 Będzie zadanie domowe - miniprojekt
 
 Nie rozumiemy - przerywamy i pytamy
 
-Korzytamy z WC na drugim końcu korytarza
-
 Jeśli jest za szybko/cicho - dajecie mi znać
+
+Przerwa obiadowa?
+
 ---
 ## Gdzie jesteśmy i po co to szkolenie
 
@@ -97,7 +94,7 @@ Czy to wystarczy?
 
 ---
 
-## Program
+## Program szkolenia
 
 Jakość
 
@@ -118,7 +115,7 @@ class: center middle
 
 ---
 
-## Jakość
+## Jakość w ogóle
 
 Co to dla Was jest?
 
@@ -135,7 +132,7 @@ Po czym poznajecie, że Wasz program jest dobrej jakości?
 layout: false
 class: center middle
 
-## Jakość - wymiar zewnętrzny
+## Jakość z perspektywy użytkownika
 
 ---
 
@@ -152,14 +149,14 @@ Poprawność działania
 layout: false
 class: center middle
 
-## Jakość "zewnętrzna" - czyli co?
+## Jakość z perspektywy użytkownika - czyli co?
 
 ---
 
 layout: false
 class: center middle
 
-## Jakość "zewnętrzna" - czyli co?
+## Jakość z perspektywy użytkownika - czyli co?
 ### Spełnione oczekiwania klientów
 
 ---
@@ -178,12 +175,12 @@ Monitoring działającego systemu
 layout: false
 class: center middle
 
-## Jakość - wymiar wewnętrzny
+## Jakość z perspektywy programistów
 
 ---
-## Jakość - wymiar wewnętrzny
+## Jakość z perspektywy programistów
 
-Czy mieliście wrażenie, że kod Waszego programu przeszkadza Wam w programowaniu
+Czy mieliście wrażenie, że kod Waszego programu przeszkadza Wam w programowaniu?
 
 ---
 
@@ -201,14 +198,7 @@ Czy mieliście wrażenie, że kod Waszego programu przeszkadza Wam w programowan
 layout: false
 class: center middle
 
-## Jakość "wewnętrzna" - czyli co?
-
----
-
-layout: false
-class: center middle
-
-## Był sobie projekt...
+## Jakość z perspektywy programistów - czyli co?
 
 
 ---
@@ -216,7 +206,7 @@ class: center middle
 layout: false
 class: center middle
 
-## Jakość "wewnętrzna" - czyli co?
+## Jakość z perspektywy programistów - czyli co?
 ### System tani w utrzymaniu!
 
 ---
@@ -373,8 +363,11 @@ class: center middle
 ```
 int d;
 // elapsed time in days
+// create ago days
 int ds;
+// modified agoe
 int dsm;
+// file age
 int faid;
 ```
 
@@ -457,9 +450,9 @@ List<Customer> allCustomers
 
 ```
 
-void LoadSingleData()
-void FetchDataFiltered()
-void GetAllData()
+void LoadSingleDataItem()
+void FetchDataItemsFiltered()
+void GetAllDataItems()
 
 ```
 ---
@@ -470,9 +463,9 @@ void GetAllData()
 
 ```
 
-void LoadSingleData()
-void FetchDataFiltered()
-void GetAllData()
+void LoadSingleDataItem()
+void FetchDataItemsFiltered()
+void GetAllDataItems()
 
 ```
 
@@ -480,9 +473,9 @@ void GetAllData()
 
 ```
 
-void GetSingleData()
-void GetDataFiltered()
-void GetAllData()
+void GetSingleDataItem()
+void GetDataItemsFiltered()
+void GetAllDataItems()
 
 ```
 
@@ -491,9 +484,10 @@ void GetAllData()
 
 ### Źle
 ```
-public class EntitiesRelation {
-    Entity o1;
-    Entity o2;
+// prod and catetory
+public class Relation {
+    FirstEntity o1;
+    SecondEntity o2;
 }
 ```
 ---
@@ -501,15 +495,15 @@ public class EntitiesRelation {
 
 ### Źle
 ```
-public class EntitiesRelation {
-    Entity o1;
-    Entity o2;
+// prod and catetory
+public class Relation {
+    FirstEntity o1;
+    SecondEntity o2;
 }
 ```
 ### Dobrze
 ```
-public class ProductWithCategory
-{
+public class ProductWithCategory {
     Product product;
     Category category;
 }
@@ -552,8 +546,8 @@ class Address {
 ## Żle
 ```
 class CarManager {
-    void rent(Car car){...};
-    void giveCarBack(Car car){...};
+    void get(Car car){...}; // rent
+    void put(Car car){...}; // return
 }
 
 ```
@@ -563,8 +557,8 @@ class CarManager {
 ## Żle
 ```
 class CarManager {
-    void rent(Car car){...};
-    void giveCarBack(Car car){...};
+    void get(Car car){...};
+    void put(Car car){...};
 }
 
 ```
@@ -590,7 +584,7 @@ W pakiecie `com.inqoo.quality.clean.library.exercises` znajdziecie prosty progra
 Pracowała nad nim wynajęta firma outsourcingowa, która wbrew umowia dostarczyła <s>zasoby</s> ludzi z niżyszmi niż ustalone kompetencjami.
 Zamiast seniora i regulara, było 1/8 regulara oraz 1 i 7/8 juniora po stawce _blended_ .
 
-Ze względu na RODO nie wiemy nawet w jakim kraju to powstawało i chyba wolimy nie wiedzieć. Domena .in w historii gita wywołała lekkie
+Ze względu na RODO nie wiemy nawet w jakim kraju to powstawało i chyba wolimy nie wiedzieć. Domena w historii gita wywołała lekkie
 przerażenie u _solution architecta_.
 
 W ocenie wynajętej firmy konsultingowej z Lublina kod jest bardzo słabej jakości i klient może zakwestionować te prace.
@@ -965,7 +959,7 @@ Moduły wysokiego poziomu nie powinny zależeć od modułów niskiego poziomu. O
 
 Abstrakcje nie powinny zależeć od detali. Detale powinny zależeć od abstrakcji.
 
-"Zależy" = kod zależy do tego do czego ma referencję
+"Zależy" = kod zależy do tego do czego ma referencję, używa.
 ---
 ## DIP - przykład
 
@@ -985,7 +979,9 @@ public class Library {
     }
 }
 ```
-`Library` zależy bezpośrednio od `List`.
+`Library` zależy bezpośrednio od `List`, która udaje bazę danych.
+
+Dlaczego to może być problem?
 ---
 ## DIP - przykład lepszy
 ```
@@ -1008,7 +1004,7 @@ Co tu zależy od czego?
 
 Od czego zależy `Library`?
 
-Co zależy od `List`?
+Co zależy od `ReadersRegister`?
 
 ---
 ## DIP - przykład jeszcze lepszy
@@ -1108,7 +1104,7 @@ List.of(1, -1, 2, -3)
     .collect(toList())
 ```
 
-Nie rozkładamy tu niczego na czynniki pierwsze, każde wywołanie zwraca nam nowy obiekt.o
+Nie rozkładamy tu niczego na czynniki pierwsze, każde wywołanie zwraca nam nowy obiekt.
 
 ---
 layout: false
