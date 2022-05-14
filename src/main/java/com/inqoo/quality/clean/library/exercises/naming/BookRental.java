@@ -8,14 +8,14 @@ import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.not
 import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.readerNotEnrolled;
 import static com.inqoo.quality.clean.library.exercises.naming.BorrowOutcome.success;
 
-class BorrowManager {
-    private final LibraryResources books;
-    private final ReadersManager readersRegistry;
+class BookRental {
+    private final Books books;
+    private final Readers readersRegistry;
     private final BorrowedBooksRegistry borrowedBooksRegistry;
 
-    BorrowManager(LibraryResources books, ReadersManager readersManager, BorrowedBooksRegistry borrowedBookRegistry) {
+    BookRental(Books books, Readers readers, BorrowedBooksRegistry borrowedBookRegistry) {
         this.books = books;
-        this.readersRegistry = readersManager;
+        this.readersRegistry = readers;
         this.borrowedBooksRegistry = borrowedBookRegistry;
     }
 
@@ -43,14 +43,17 @@ class BorrowManager {
     }
 
     ReturnOutcome giveBack(Book book, Reader reader) {
-        if (!readersRegistry.contains(reader))
+        if (!readersRegistry.contains(reader)){
             return ReturnOutcome.readerNotEnrolled;
+        }
 
-        if (!books.contains(book))
+        if (!books.contains(book)){
             return ReturnOutcome.notInCatalogue;
+        }
 
-        if (borrowedBooksRegistry.readerHasNoBookCopy(book, reader))
+        if (borrowedBooksRegistry.readerHasNoBookCopy(book, reader)){
             return ReturnOutcome.bookNotBorrowedByReader;
+        }
 
         books.add(book.getIsbn());
         borrowedBooksRegistry.returnBook(book, reader);

@@ -5,7 +5,7 @@ import org.junit.Test;
 import static com.inqoo.quality.clean.library.referential.BorrowOutcome.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LibraryManagerTest {
+public class LibraryTest {
 
     private final Library library = new LibraryFactory().library();
     private final BookFixture bookFixture = new BookFixture();

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LibraryTest {
 
-    private final LibraryManager libraryManager = new LibraryFactory().library();
+    private final Library libraryManager = new LibraryFactory().library();
     private final BookFixture bookFixture = new BookFixture();
     private final Book paleBlueDot = bookFixture.paleBlueDot();
     private final Book cleanCode = bookFixture.cleanCode();
@@ -34,7 +34,7 @@ public class LibraryTest {
         enrollJonhSmith();
 
         // then
-        assertThat(libraryManager.loadReaders()).contains(johnSmith);
+        assertThat(libraryManager.getReaders()).contains(johnSmith);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class LibraryTest {
         // then
         bookHasBeenSuccessfullyBorrowed(borrowOutcome);
         // and
-        assertThat(libraryManager.fetchBookAmounts(paleBlueDot)).isEqualTo(0);
+        assertThat(libraryManager.showAvailableCopies(paleBlueDot)).isEqualTo(0);
     }
 
     private void bookHasBeenSuccessfullyBorrowed(BorrowOutcome borrowOutcome) {
@@ -102,7 +102,7 @@ public class LibraryTest {
         addPaleBlueDotToLibrary();
 
         // when
-        int amount = libraryManager.fetchBookAmounts(paleBlueDot);
+        int amount = libraryManager.showAvailableCopies(paleBlueDot);
 
         // then
         assertThat(amount).isEqualTo(1);
@@ -130,7 +130,7 @@ public class LibraryTest {
         assertThat(outcome).isEqualTo(success);
 
         // when
-        int amount = libraryManager.fetchBookAmounts(paleBlueDot);
+        int amount = libraryManager.showAvailableCopies(paleBlueDot);
 
         // then
         assertThat(amount).isEqualTo(0);
@@ -170,7 +170,7 @@ public class LibraryTest {
         assertThat(borrowOutcome).isEqualTo(success);
 
         // when
-        ReturnOutcome returnOutcome = libraryManager.returns(paleBlueDot, johnSmith);
+        ReturnOutcome returnOutcome = libraryManager.returnBook(paleBlueDot, johnSmith);
 
         // then
         assertThat(returnOutcome).isEqualTo(ReturnOutcome.success);
@@ -182,7 +182,7 @@ public class LibraryTest {
         addPaleBlueDotToLibrary();
 
         // when
-        ReturnOutcome returnOutcome = libraryManager.returns(paleBlueDot, johnSmith);
+        ReturnOutcome returnOutcome = libraryManager.returnBook(paleBlueDot, johnSmith);
 
         // then
         assertThat(returnOutcome).isEqualTo(ReturnOutcome.readerNotEnrolled);
@@ -194,7 +194,7 @@ public class LibraryTest {
         enrollJonhSmith();
 
         // when
-        ReturnOutcome returnOutcome = libraryManager.returns(paleBlueDot, johnSmith);
+        ReturnOutcome returnOutcome = libraryManager.returnBook(paleBlueDot, johnSmith);
 
         // then
         assertThat(returnOutcome).isEqualTo(ReturnOutcome.notInCatalogue);
@@ -208,7 +208,7 @@ public class LibraryTest {
         addPaleBlueDotToLibrary();
 
         // when
-        ReturnOutcome returnOutcome = libraryManager.returns(paleBlueDot, johnSmith);
+        ReturnOutcome returnOutcome = libraryManager.returnBook(paleBlueDot, johnSmith);
 
         // then
         assertThat(returnOutcome).isEqualTo(ReturnOutcome.bookNotBorrowedByReader);
@@ -237,22 +237,22 @@ public class LibraryTest {
     }
 
     private void enrollJonhSmith() {
-        libraryManager.newReader(johnSmith);
+        libraryManager.enroll(johnSmith);
     }
 
     private void addPaleBlueDotToLibrary() {
-        libraryManager.putBook(paleBlueDot);
+        libraryManager.addBook(paleBlueDot);
     }
 
     private void addCleanCodeToLibrary() {
-        libraryManager.putBook(cleanCode);
+        libraryManager.addBook(cleanCode);
     }
 
     private BorrowOutcome readerTriesToBorrowBook(Book book, Reader reader) {
-        return libraryManager.provideBook(book, reader);
+        return libraryManager.borrowBook(book, reader);
     }
 
     private void enrollJaneDoe() {
-        libraryManager.newReader(janeDoe);
+        libraryManager.enroll(janeDoe);
     }
 }

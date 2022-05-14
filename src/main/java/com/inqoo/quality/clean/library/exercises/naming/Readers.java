@@ -5,10 +5,10 @@ import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
-class ReadersManager {
+class Readers {
     private final List<Reader> readers;
 
-    ReadersManager() {
+    Readers() {
         readers = new ArrayList<>();
     }
 

@@ -776,8 +776,8 @@ public class Library {
     List<Reader> enrolledReaders() {
         return readersRegister.readers();
     }
-    BorrowOutcome borrow(Book book, Reader reader) {
-        return bookBorrow.borrow(book, reader);
+    BorrowOutcome bookRental(Book book, Reader reader) {
+        return bookBorrow.bookRental(book, reader);
     }
     ReturnOutcome giveBack(Book book, Reader reader) {
         return bookBorrow.giveBack(book, reader);
@@ -793,7 +793,7 @@ class BookBorrow {
     private final ReadersRegister readersRegister;
     private final BorrowedBooksRegistry borrowedBooksRegistry;
 
-    BorrowOutcome borrow(Book book, Reader reader) {...}
+    BorrowOutcome bookRental(Book book, Reader reader) {...}
     private boolean readerAlreadyBorrowedTheBook(Book book, Reader reader) {...}
     private boolean noBookCopiesAvailable(Book book) {...}
     private boolean bookNotInCatalogue(Book book) {...}
@@ -924,7 +924,7 @@ public class Library implements BookFacade, ReaderFacade {
     public Set<Book> bookCatalogue(){...}
     public void enroll(Reader reader){...}
     public List<Reader> enrolledReaders(){...}
-    public BorrowOutcome borrow(Book book, Reader reader){...}
+    public BorrowOutcome bookRental(Book book, Reader reader){...}
     public ReturnOutcome giveBack(Book book, Reader reader){...}
 }
 ```
@@ -938,7 +938,7 @@ public interface BookFacade {
     void addBooks(Book book, int amount);
     int availableCopies(Book book);
     Set<Book> bookCatalogue();
-    BorrowOutcome borrow(Book book, Reader reader);
+    BorrowOutcome bookRental(Book book, Reader reader);
     ReturnOutcome giveBack(Book book, Reader reader);
 }
 ```

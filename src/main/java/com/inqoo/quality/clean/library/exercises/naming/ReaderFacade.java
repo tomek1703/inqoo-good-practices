@@ -3,7 +3,7 @@ package com.inqoo.quality.clean.library.exercises.naming;
 import java.util.List;
 
 public interface ReaderFacade {
-    void newReader(Reader reader);
+    void enroll(Reader reader);
 
-    List<Reader> loadReaders();
+    List<Reader> getReaders();
 }

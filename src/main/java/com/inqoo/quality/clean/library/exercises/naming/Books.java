@@ -1,15 +1,14 @@
 package com.inqoo.quality.clean.library.exercises.naming;
 
-import java.util.Map;
 import java.util.Set;
 
 // TODO: class cleanup
 
-class LibraryResources {
+class Books {
     private final Catalogue catalogue;
     private final BookWarehouse bookWarehouse;
 
-    LibraryResources(Catalogue catalogue, BookWarehouse bookWarehouse) {
+    Books(Catalogue catalogue, BookWarehouse bookWarehouse) {
         this.catalogue = catalogue;
         this.bookWarehouse = bookWarehouse;
     }

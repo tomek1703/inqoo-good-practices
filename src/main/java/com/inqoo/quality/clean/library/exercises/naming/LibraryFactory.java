@@ -1,11 +1,11 @@
 package com.inqoo.quality.clean.library.exercises.naming;
 
 class LibraryFactory {
-    LibraryManager library() {
-        ReadersManager readersManager = new ReadersManager();
-        LibraryResources libraryResources = new LibraryResources(new Catalogue(), new BookWarehouse());
+    Library library() {
+        Readers readers = new Readers();
+        Books books = new Books(new Catalogue(), new BookWarehouse());
         BorrowedBooksRegistry borrowedBookRegistry = new BorrowedBooksRegistry();
-        BorrowManager borrowManager = new BorrowManager(libraryResources, readersManager, borrowedBookRegistry);
-        return new LibraryManager(readersManager, borrowManager, libraryResources);
+        BookRental bookRental = new BookRental(books, readers, borrowedBookRegistry);
+        return new Library(readers, bookRental, books);
     }
 }
